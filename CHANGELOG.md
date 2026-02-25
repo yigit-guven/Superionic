@@ -1,0 +1,11 @@
+- Intercepted `BufferSource.getBuffer()` to defer and suppress unnecessary `endBatch()` calls between compatible render types
+- Introduced pending-batch tracking: flushes are held until a genuinely incompatible render type arrives, reducing total GPU buffer submissions per frame
+- Added safety drain hooks at `getBuffer()` return and `endBatch()` entry to guarantee no geometry is silently dropped
+- Extended `RenderType.canConsolidateConsecutiveGeometry()` to return `true` when the same render type instance is queried consecutively
+- Eliminated redundant buffer flushes in any bulk-rendering scenario where the same type repeats (entity groups, block surfaces, UI elements)
+- Injected into `LevelRenderer.extractVisibleEntities()` to sort entities by type hash before render state extraction
+- Groups same-type entities into consecutive draw calls to minimize GPU pipeline state switches
+- Added an optional on-screen performance overlay displaying FPS, frame time, memory usage, entity count, and particle count
+- Implemented automatic config generation and auto-saving to handle missing fields without manual migration
+- Created a Mod Menu config screen with toggles and tooltips for all features
+- Applied configuration changes immediately on save without requiring a game restart
