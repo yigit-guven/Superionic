@@ -18,14 +18,14 @@ public class UltimatePerformanceModMenu implements ModMenuApi {
             ConfigCategory general = builder.getOrCreateCategory(Component.literal("General"));
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Mod Enabled"), UltimatePerformanceModConfig.enabled)
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Batch Rendering"), UltimatePerformanceModConfig.batchRendering)
                 .setDefaultValue(true)
-                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.enabled = newValue)
+                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.batchRendering = newValue)
                 .build());
 
-            general.addEntry(entryBuilder.startIntSlider(Component.literal("Optimization Level"), UltimatePerformanceModConfig.optimizationLevel, 1, 10)
-                .setDefaultValue(5)
-                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.optimizationLevel = newValue)
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Performance Toast"), UltimatePerformanceModConfig.showPerformanceToast)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.showPerformanceToast = newValue)
                 .build());
 
             return builder.build();

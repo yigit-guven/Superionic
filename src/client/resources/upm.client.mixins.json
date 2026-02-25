@@ -3,7 +3,9 @@
 	"package": "com.yigitguven.upm.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ClientPerformanceMixin"
+		"ClientPerformanceMixin",
+		"BatchRenderingMixin",
+		"PerformanceToastMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

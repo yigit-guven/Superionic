@@ -1,6 +1,6 @@
 package com.yigitguven.upm;
 
 public class UltimatePerformanceModConfig {
-    public static boolean enabled = true;
-    public static int optimizationLevel = 5;
+    public static boolean batchRendering = true;
+    public static boolean showPerformanceToast = false;
 }
