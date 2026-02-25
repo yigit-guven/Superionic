@@ -20,7 +20,20 @@
 	"entrypoints": {
 		"client": [
 			"com.yigitguven.upm.UltimatePerformanceModClient"
+		],
+		"modmenu": [
+			"com.yigitguven.upm.UltimatePerformanceModMenu"
 		]
+	},
+	"custom": {
+		"modmenu": {
+			"badges": [
+				"client"
+			],
+			"links": {
+				"modmenu.discord": "https://discord.gg/gNajXYku5z"
+			}
+		}
 	},
 	"mixins": [
 		{
