@@ -5,12 +5,13 @@
 	"client": [
 		"ClientPerformanceMixin",
 		"BatchRenderingMixin",
+		"RenderTypeMixin",
 		"HudBatchingMixin",
 		"ParticleBatchingMixin",
 		"EntityBatchingMixin",
 		"PerformanceToastMixin"
 	],
 	"injectors": {
-		"defaultRequire": 1
+		"defaultRequire": 0
 	}
 }
