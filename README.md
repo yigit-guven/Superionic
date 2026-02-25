@@ -10,6 +10,8 @@
   <img alt="License" src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat-square">
   <img alt="Environment" src="https://img.shields.io/badge/Side-Client--Only-0078d4?style=flat-square">
   <a href="https://discord.gg/gNajXYku5z"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join-5865f2?style=flat-square&logo=discord&logoColor=white"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/ultimate-performance-mod"><img alt="CurseForge" src="https://img.shields.io/badge/CurseForge-Available-f16436?style=flat-square&logo=curseforge&logoColor=white"></a>
+  <a href="https://modrinth.com/mod/ultimate-performance-mod"><img alt="Modrinth" src="https://img.shields.io/badge/Modrinth-Available-00af5c?style=flat-square&logo=modrinth&logoColor=white"></a>
 </p>
 
 ---
@@ -156,6 +158,10 @@ You are free to use, modify, and redistribute this project. Derivative works mus
 
 <p align="center">
   Built by <a href="https://github.com/yigit-guven">Yigit Guven</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.curseforge.com/minecraft/mc-mods/ultimate-performance-mod">CurseForge</a>
+  &nbsp;·&nbsp;
+  <a href="https://modrinth.com/mod/ultimate-performance-mod">Modrinth</a>
   &nbsp;·&nbsp;
   <a href="https://discord.gg/gNajXYku5z">Discord</a>
   &nbsp;·&nbsp;
