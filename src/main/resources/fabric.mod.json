@@ -8,8 +8,11 @@
 		"Yigit Guven"
 	],
 	"contact": {
-		"homepage": "https://github.com/yigitguven/upm",
-		"sources": "https://github.com/yigitguven/upm"
+		"homepage": "https://github.com/yigit-guven/Ultimate-Performance-Mod",
+		"sources": "https://github.com/yigit-guven/Ultimate-Performance-Mod",
+		"issues": "https://github.com/yigit-guven/Ultimate-Performance-Mod/issues",
+		"discord": "https://discord.gg/gNajXYku5z",
+		"wiki": "https://github.com/yigit-guven/Ultimate-Performance-Mod/wiki"
 	},
 	"license": "GPL-3.0",
 	"icon": "assets/upm/icon.png",
@@ -30,5 +33,9 @@
 		"minecraft": "~1.21.11",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"suggests": {
+		"cloth-config": "*",
+		"modmenu": "*"
 	}
 }
