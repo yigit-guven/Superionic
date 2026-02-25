@@ -19,26 +19,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BatchRenderingMixin {
 
     @Shadow
-    protected abstract void endBatch();
+    public abstract void endBatch();
 
     @Shadow
     private RenderType lastSharedType;
 
-    @Inject(method = "getBuffer", at = @At("HEAD"))
-    private void onGetBuffer(RenderType renderType, CallbackInfoReturnable<VertexConsumer> cir) {
-        if (UltimatePerformanceModConfig.batchRendering) {
-            // If the new RenderType is compatible with the last one, we skip ending the batch.
-            // This allows vertex data to be appended to the same buffer if they share the same state.
-            if (this.lastSharedType != null && canBatch(this.lastSharedType, renderType)) {
-                // By not calling endBatch() here, we essentially keep the previous buffer open.
-            }
+    @Redirect(method = "getBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"))
+    private void onEndBatch(MultiBufferSource.BufferSource instance, RenderType currentType) {
+        if (UltimatePerformanceModConfig.batchRendering && this.lastSharedType != null && canBatch(this.lastSharedType, currentType)) {
+            // Skip endBatch() to group compatible draw calls
+            return;
         }
+        instance.endBatch();
     }
 
     private boolean canBatch(RenderType last, RenderType current) {
-        // Conceptually, we check if shaders and textures are identical.
-        // In a real implementation like ImmediatelyFast, this involves deep state comparison.
-        // For our mod, we implement a safe check for common types.
+        if (last == current) return true;
+        if (last == null || current == null) return false;
+
+        // Strict equality is the safest for a general-purpose performance mod.
+        // We can add more complex logic here later if needed (e.g. comparing shaders/textures).
         return last.equals(current);
     }
 }

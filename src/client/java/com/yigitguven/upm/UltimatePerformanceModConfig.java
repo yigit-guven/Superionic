@@ -14,6 +14,7 @@ public class UltimatePerformanceModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static boolean batchRendering = true;
+    public static boolean hudBatching = true;
     public static boolean showPerformanceToast = false;
 
     public static void load() {
@@ -26,6 +27,7 @@ public class UltimatePerformanceModConfig {
             UltimatePerformanceModConfigData config = GSON.fromJson(reader, UltimatePerformanceModConfigData.class);
             if (config != null) {
                 batchRendering = config.batchRendering;
+                hudBatching = config.hudBatching;
                 showPerformanceToast = config.showPerformanceToast;
             }
         } catch (IOException e) {
@@ -35,11 +37,11 @@ public class UltimatePerformanceModConfig {
 
     public static void save() {
         try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-            GSON.toJson(new UltimatePerformanceModConfigData(batchRendering, showPerformanceToast), writer);
+            GSON.toJson(new UltimatePerformanceModConfigData(batchRendering, hudBatching, showPerformanceToast), writer);
         } catch (IOException e) {
             UltimatePerformanceModClient.LOGGER.error("Failed to save config!", e);
         }
     }
 
-    private record UltimatePerformanceModConfigData(boolean batchRendering, boolean showPerformanceToast) {}
+    private record UltimatePerformanceModConfigData(boolean batchRendering, boolean hudBatching, boolean showPerformanceToast) {}
 }

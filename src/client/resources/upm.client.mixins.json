@@ -5,6 +5,7 @@
 	"client": [
 		"ClientPerformanceMixin",
 		"BatchRenderingMixin",
+		"HudBatchingMixin",
 		"PerformanceToastMixin"
 	],
 	"injectors": {
