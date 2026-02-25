@@ -3,27 +3,23 @@
 	"id": "upm",
 	"version": "${version}",
 	"name": "Ultimate Performance Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Highly optimized client-side performance improvements.",
 	"authors": [
-		"Me!"
+		"Yigit Guven"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/yigitguven/upm",
+		"sources": "https://github.com/yigitguven/upm"
 	},
-	"license": "CC0-1.0",
+	"license": "GPL-3.0",
 	"icon": "assets/upm/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"com.yigitguven.upm.UltimatePerformanceMod"
-		],
 		"client": [
 			"com.yigitguven.upm.UltimatePerformanceModClient"
 		]
 	},
 	"mixins": [
-		"upm.mixins.json",
 		{
 			"config": "upm.client.mixins.json",
 			"environment": "client"
