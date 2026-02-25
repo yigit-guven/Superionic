@@ -20,11 +20,25 @@ public class UltimatePerformanceModMenu implements ModMenuApi {
 
             general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Batch Rendering"), UltimatePerformanceModConfig.batchRendering)
                 .setDefaultValue(true)
+                .setTooltip(Component.literal("Reduces draw calls by tracking and caching RenderType compatibility."))
                 .setSaveConsumer(newValue -> UltimatePerformanceModConfig.batchRendering = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("HUD Batching"), UltimatePerformanceModConfig.hudBatching)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Reserved for future HUD batch optimizations (1.21.11 changed the rendering API)."))
+                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.hudBatching = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Entity Sorting"), UltimatePerformanceModConfig.entitySorting)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Sorts entities by type before rendering to reduce draw call switches."))
+                .setSaveConsumer(newValue -> UltimatePerformanceModConfig.entitySorting = newValue)
                 .build());
 
             general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Performance Toast"), UltimatePerformanceModConfig.showPerformanceToast)
                 .setDefaultValue(false)
+                .setTooltip(Component.literal("Shows an on-screen overlay with FPS, memory, entity and particle counts."))
                 .setSaveConsumer(newValue -> UltimatePerformanceModConfig.showPerformanceToast = newValue)
                 .build());
 

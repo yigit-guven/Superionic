@@ -6,6 +6,8 @@
 		"ClientPerformanceMixin",
 		"BatchRenderingMixin",
 		"HudBatchingMixin",
+		"ParticleBatchingMixin",
+		"EntityBatchingMixin",
 		"PerformanceToastMixin"
 	],
 	"injectors": {
