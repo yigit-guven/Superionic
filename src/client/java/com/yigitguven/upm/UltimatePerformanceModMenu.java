@@ -28,7 +28,7 @@ public class UltimatePerformanceModMenu implements ModMenuApi {
                 .setSaveConsumer(newValue -> UltimatePerformanceModConfig.showPerformanceToast = newValue)
                 .build());
 
-            return builder.build();
+            return builder.setSavingRunnable(UltimatePerformanceModConfig::save).build();
         };
     }
 }

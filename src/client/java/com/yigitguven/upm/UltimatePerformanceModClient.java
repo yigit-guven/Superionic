@@ -10,6 +10,7 @@ public class UltimatePerformanceModClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		UltimatePerformanceModConfig.load();
 		LOGGER.info("Ultimate Performance Mod (Client Only) Initialized!");
 	}
 }
