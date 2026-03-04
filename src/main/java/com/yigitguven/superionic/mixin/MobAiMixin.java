@@ -31,9 +31,9 @@ public abstract class MobAiMixin {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        // If mob is more than 48 blocks away, only tick AI every 4th tick
+        // If mob is more than 64 blocks away, only tick AI every 4th tick
         double distanceSq = self.distanceToSqr(mc.player);
-        if (distanceSq > 2304) { // 48 * 48
+        if (distanceSq > 4096) { // 64 * 64
             if (self.tickCount % 4 != 0) {
                 BenchmarkSystem.recordSkippedAiTick();
                 ci.cancel();

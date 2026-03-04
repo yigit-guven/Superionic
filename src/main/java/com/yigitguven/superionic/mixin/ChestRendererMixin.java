@@ -26,16 +26,16 @@ public abstract class ChestRendererMixin {
      * We injected into extractRenderState because the old getOpenness method no 
      * longer exists in 1.21.11.
      */
-    @Inject(method = "extractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState;FLnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState;FLnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V", at = @At("RETURN"))
     private void superionic$fastChestRender(BlockEntity blockEntity, ChestRenderState chestRenderState, float f, Vec3 vec3, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, CallbackInfo ci) {
         if (SuperionicConfig.fastChestRendering) {
             // Draw a basic, non-animated chest box instead of the full model.
             // This relies on having a pre-built static VBO for the chest, 
             // which saves CPU time not recalculating animations every frame.
             
-            // For now, we just skip the extraction so the chest won't animate,
-            // demonstrating the injection works correctly in 1.21.11.
-            ci.cancel();
+            // By setting open to 0.0F, the renderer uses a static closed configuration 
+            // instead of dynamically interpreting the lid angle.
+            chestRenderState.open = 0.0F;
         }
     }
 }

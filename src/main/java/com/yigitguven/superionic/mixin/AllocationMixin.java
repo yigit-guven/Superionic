@@ -34,13 +34,13 @@ public class AllocationMixin {
         
         double distSq = entity.distanceToSqr(net.minecraft.client.Minecraft.getInstance().player);
 
-        // Shadow Culling (Ultra-aggressive debug)
-        if (SuperionicConfig.entityShadowCulling && distSq > 1.0) { 
+        // Shadow Culling (Reduce to 64 blocks)
+        if (SuperionicConfig.entityShadowCulling && distSq > 4096.0) { 
             BenchmarkSystem.recordCulledShadow();
         }
 
-        // Entity Culling / Allocation Reduction (Ultra-aggressive debug)
-        if (SuperionicConfig.reduceAllocations && distSq > 1.0) { 
+        // Entity Culling / Allocation Reduction (Reduce to 128 blocks)
+        if (SuperionicConfig.reduceAllocations && distSq > 16384.0) { 
              BenchmarkSystem.recordSkippedAllocation();
              cir.setReturnValue(false);
         }
