@@ -29,8 +29,14 @@ public class SuperionicConfig {
     public static boolean reduceAllocations = true;
     public static boolean fastChunkLoading = true;
     public static boolean packetCompressionTuning = true;
-    public static double particleRenderDistance = 64.0;
     public static boolean enableBenchmarks = true;
+
+    // Distances and Rates
+    public static int entityCullingDistance = 128;
+    public static int shadowCullingDistance = 64;
+    public static int aiThrottlingDistance = 64;
+    public static int aiThrottlingRate = 4;
+    public static int particleCullingDistance = 64;
 
     public static void load() {
         if (!CONFIG_FILE.exists()) {
@@ -41,8 +47,6 @@ public class SuperionicConfig {
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
             SuperionicConfigData config = GSON.fromJson(reader, SuperionicConfigData.class);
             if (config != null) {
-                // Only override the Java defaults if the field was present in the JSON
-                // (Gson will leave boxed Booleans as null if the key is missing)
                 if (config.batchRendering != null) batchRendering = config.batchRendering;
                 if (config.hudBatching != null) hudBatching = config.hudBatching;
                 if (config.entitySorting != null) entitySorting = config.entitySorting;
@@ -55,13 +59,17 @@ public class SuperionicConfig {
                 if (config.reduceAllocations != null) reduceAllocations = config.reduceAllocations;
                 if (config.fastChunkLoading != null) fastChunkLoading = config.fastChunkLoading;
                 if (config.packetCompressionTuning != null) packetCompressionTuning = config.packetCompressionTuning;
-                if (config.particleRenderDistance != null) particleRenderDistance = config.particleRenderDistance;
                 if (config.enableBenchmarks != null) enableBenchmarks = config.enableBenchmarks;
+                
+                if (config.entityCullingDistance != null) entityCullingDistance = config.entityCullingDistance;
+                if (config.shadowCullingDistance != null) shadowCullingDistance = config.shadowCullingDistance;
+                if (config.aiThrottlingDistance != null) aiThrottlingDistance = config.aiThrottlingDistance;
+                if (config.aiThrottlingRate != null) aiThrottlingRate = config.aiThrottlingRate;
+                if (config.particleCullingDistance != null) particleCullingDistance = config.particleCullingDistance;
             }
         } catch (IOException e) {
             SuperionicClient.LOGGER.error("Failed to load config!", e);
         }
-        // Always save after loading to write any new/missing fields with their defaults.
         save();
     }
 
@@ -71,8 +79,9 @@ public class SuperionicConfig {
                 batchRendering, hudBatching, entitySorting, showPerformanceToast, 
                 particleCulling, entityShadowCulling, fastLeaves, 
                 fastChestRendering, aiThrottling, reduceAllocations, 
-                fastChunkLoading, packetCompressionTuning, particleRenderDistance,
-                enableBenchmarks), writer);
+                fastChunkLoading, packetCompressionTuning, enableBenchmarks,
+                entityCullingDistance, shadowCullingDistance, aiThrottlingDistance,
+                aiThrottlingRate, particleCullingDistance), writer);
         } catch (IOException e) {
             SuperionicClient.LOGGER.error("Failed to save config!", e);
         }
@@ -91,6 +100,10 @@ public class SuperionicConfig {
             Boolean reduceAllocations,
             Boolean fastChunkLoading,
             Boolean packetCompressionTuning,
-            Double particleRenderDistance,
-            Boolean enableBenchmarks) {}
+            Boolean enableBenchmarks,
+            Integer entityCullingDistance,
+            Integer shadowCullingDistance,
+            Integer aiThrottlingDistance,
+            Integer aiThrottlingRate,
+            Integer particleCullingDistance) {}
 }

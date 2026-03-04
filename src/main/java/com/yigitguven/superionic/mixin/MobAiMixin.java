@@ -31,10 +31,10 @@ public abstract class MobAiMixin {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        // If mob is more than 64 blocks away, only tick AI every 4th tick
+        // Throttled AI logic based on config distance and rate
         double distanceSq = self.distanceToSqr(mc.player);
-        if (distanceSq > 4096) { // 64 * 64
-            if (self.tickCount % 4 != 0) {
+        if (distanceSq > (SuperionicConfig.aiThrottlingDistance * SuperionicConfig.aiThrottlingDistance)) {
+            if (self.tickCount % SuperionicConfig.aiThrottlingRate != 0) {
                 BenchmarkSystem.recordSkippedAiTick();
                 ci.cancel();
             }

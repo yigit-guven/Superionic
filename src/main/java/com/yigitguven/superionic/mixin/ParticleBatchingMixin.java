@@ -44,9 +44,8 @@ public class ParticleBatchingMixin {
         double dzSqr = z - pz;
         double distSq = dxSqr * dxSqr + dySqr * dySqr + dzSqr * dzSqr;
         
-        // Debug mode: aggressive culling (distSq > 1.0), normally use config via SuperionicConfig.particleRenderDistance
-        // Let's use 1.0 if we want to debug, else config
-        if (distSq > SuperionicConfig.particleRenderDistance * SuperionicConfig.particleRenderDistance) {
+        // Use configuration distance for particle culling
+        if (distSq > SuperionicConfig.particleCullingDistance * SuperionicConfig.particleCullingDistance) {
             BenchmarkSystem.recordCulledParticle();
             cir.setReturnValue(null);
         }
