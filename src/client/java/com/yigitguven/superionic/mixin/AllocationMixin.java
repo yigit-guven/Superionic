@@ -1,5 +1,6 @@
 package com.yigitguven.superionic.mixin;
  
+import com.yigitguven.superionic.BenchmarkSystem;
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
@@ -26,11 +27,18 @@ public class AllocationMixin {
      */
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private <E extends Entity> void superionic$reduceEntityAllocations(E entity, double x, double y, double z, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, CallbackInfo ci) {
-        if (!SuperionicConfig.reduceAllocations) return;
+        if (!SuperionicConfig.reduceAllocations && !SuperionicConfig.entityShadowCulling) return;
         
-        // Skip rendering and all associated object allocations for entities more than 128 blocks away
-        // (unless they are large entities that might still be visible)
-        if (entity.distanceToSqr(x, y, z) > 16384) { // 128 * 128
+        double distSq = x * x + y * y + z * z;
+
+        // Shadow Culling (Distance-based)
+        if (SuperionicConfig.entityShadowCulling && distSq > 576) { // 24 blocks
+            BenchmarkSystem.recordCulledShadow();
+        }
+
+        // Allocation Reduction (Distance-based)
+        if (SuperionicConfig.reduceAllocations && distSq > 4096) { // 64 blocks
+             BenchmarkSystem.recordSkippedAllocation();
              ci.cancel();
         }
     }

@@ -90,6 +90,12 @@ public class SuperionicMenu implements ModMenuApi {
                 .setSaveConsumer(newValue -> SuperionicConfig.packetCompressionTuning = newValue)
                 .build());
 
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Enable Benchmarks"), SuperionicConfig.enableBenchmarks)
+                .setDefaultValue(false)
+                .setTooltip(Component.literal("Collects performance metrics during gameplay for the benchmarking CSV."))
+                .setSaveConsumer(newValue -> SuperionicConfig.enableBenchmarks = newValue)
+                .build());
+
             return builder.setSavingRunnable(SuperionicConfig::save).build();
         };
     }

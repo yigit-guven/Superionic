@@ -11,7 +11,7 @@ import net.minecraft.ChatFormatting;
 
 public class PerformanceToast implements Toast {
     private static final int WIDTH = 160;
-    private static final int HEIGHT = 42; // Compact but enough for 3 rows
+    private static final int HEIGHT = 52; // Increased for extra row
 
     @Override
     public Object getToken() {
@@ -44,37 +44,38 @@ public class PerformanceToast implements Toast {
         int memPercent = (int) (usedMem * 100 / maxMem);
 
         int entities = (client.level != null) ? client.level.getEntityCount() : 0;
-        String particles = (client.particleEngine != null) ? client.particleEngine.countParticles() : "0";
-        // Clean up particle string if it contains "Particles: "
-        if (particles.startsWith("Particles: ")) {
-            particles = particles.substring(11);
-        }
+        // Optimizations
+        long culledParticles = com.yigitguven.superionic.BenchmarkSystem.getCulledParticles();
+        long aiSavings = com.yigitguven.superionic.BenchmarkSystem.getSkippedAiTicks();
+        long batchSavings = com.yigitguven.superionic.BenchmarkSystem.getSuppressedFlushes();
 
-        // Modern Background
-        graphics.fill(0, 0, WIDTH, HEIGHT, 0xAA222222);
-        graphics.fill(0, 0, 2, HEIGHT, 0xFF55FF55);
+        // --- Premium Glassmorphism UI ---
+        // Semi-transparent main plate
+        graphics.fill(0, 0, WIDTH, HEIGHT, 0x99111111);
+        // Cyan gradient border (bottom)
+        graphics.fill(0, HEIGHT - 1, WIDTH, HEIGHT, 0xFF00F0FF);
+        // Orange accent bar (left)
+        graphics.fill(0, 0, 2, HEIGHT - 1, 0xFFFFB800);
 
-        // Row 1: FPS & MS
-        graphics.drawString(font, Component.literal("FPS: ").append(Component.literal(String.valueOf(fps)).withStyle(getFpsStyle(fps))), 10, 5, 0xFFFFFFFF, false);
-        graphics.drawString(font, Component.literal("MS: ").append(Component.literal(String.format("%.1f", ms)).withStyle(ChatFormatting.WHITE)), 80, 5, 0xFFFFFFFF, false);
-        
-        // Row 2: Memory & Entities
-        graphics.drawString(font, Component.literal("MEM: ").append(Component.literal(memPercent + "%").withStyle(getMemoryStyle(memPercent))), 10, 18, 0xFFFFFFFF, false);
-        graphics.drawString(font, Component.literal("E: ").append(Component.literal(String.valueOf(entities)).withStyle(ChatFormatting.WHITE)), 80, 18, 0xFFFFFFFF, false);
+        // Header
+        graphics.drawString(font, Component.literal("SUPERIONIC ENGINE").withStyle(ChatFormatting.BOLD), 10, 5, 0xFF00F0FF, false);
 
-        // Row 3: Particles
-        graphics.drawString(font, Component.literal("P: ").append(Component.literal(particles).withStyle(ChatFormatting.WHITE)), 10, 31, 0xFFFFFFFF, false);
+        // Grid Layout
+        // Column 1
+        drawMetric(graphics, font, "FPS", String.valueOf(fps), 10, 18, 0xFFFFB800, 0xFFFFFFFF);
+        drawMetric(graphics, font, "MEM", memPercent + "%", 10, 28, 0xFFFFB800, 0xFFFFFFFF);
+
+        // Column 2
+        drawMetric(graphics, font, "MS ", String.format("%.1f", ms), 85, 18, 0xFFFFB800, 0xFFFFFFFF);
+        drawMetric(graphics, font, "ENT", String.valueOf(entities), 85, 28, 0xFFFFB800, 0xFFFFFFFF);
+
+        // Row 3: Optimizations (Real-time proof)
+        drawMetric(graphics, font, "OPT", (culledParticles + aiSavings + batchSavings) + "", 10, 38, 0xFF00F0FF, 0xFF00F0FF);
     }
 
-    private ChatFormatting getFpsStyle(int fps) {
-        if (fps >= 60) return ChatFormatting.GREEN;
-        if (fps >= 30) return ChatFormatting.YELLOW;
-        return ChatFormatting.RED;
-    }
-
-    private ChatFormatting getMemoryStyle(int percent) {
-        if (percent < 70) return ChatFormatting.GREEN;
-        if (percent < 90) return ChatFormatting.YELLOW;
-        return ChatFormatting.RED;
+    private void drawMetric(GuiGraphics graphics, Font font, String label, String value, int x, int y, int labelColor, int valueColor) {
+        graphics.drawString(font, label + ":", x, y, labelColor, false);
+        int offset = font.width(label + ":") + 4;
+        graphics.drawString(font, value, x + offset, y, valueColor, false);
     }
 }

@@ -1,5 +1,6 @@
 package com.yigitguven.superionic.mixin;
 
+import com.yigitguven.superionic.BenchmarkSystem;
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Mob;
@@ -34,6 +35,7 @@ public abstract class MobAiMixin {
         double distanceSq = self.distanceToSqr(mc.player);
         if (distanceSq > 2304) { // 48 * 48
             if (self.tickCount % 4 != 0) {
+                BenchmarkSystem.recordSkippedAiTick();
                 ci.cancel();
             }
         }

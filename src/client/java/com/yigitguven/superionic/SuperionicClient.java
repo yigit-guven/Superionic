@@ -10,7 +10,13 @@ public class SuperionicClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		LOGGER.info("Initializing Superionic client...");
 		SuperionicConfig.load();
+		
+		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			BenchmarkSystem.tick();
+		});
+		
 		LOGGER.info("Superionic (Client Only) Initialized!");
 	}
 }

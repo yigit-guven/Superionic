@@ -1,5 +1,6 @@
 package com.yigitguven.superionic.mixin;
  
+import com.yigitguven.superionic.BenchmarkSystem;
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -27,6 +28,7 @@ public class LeavesBlockMixin {
     private void superionic$optimizeLeafRendering(BlockState state, BlockState adjacentState, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         if (SuperionicConfig.fastLeaves) {
             if (adjacentState.getBlock() instanceof LeavesBlock) {
+                BenchmarkSystem.recordCulledLeafFace();
                 cir.setReturnValue(true);
             }
         }

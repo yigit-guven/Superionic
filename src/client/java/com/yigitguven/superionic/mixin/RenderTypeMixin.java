@@ -1,5 +1,6 @@
 package com.yigitguven.superionic.mixin;
 
+import com.yigitguven.superionic.BenchmarkSystem;
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,20 +37,15 @@ public class RenderTypeMixin {
      * If it would return false, check if we've seen this exact type consecutively —
      * if so, override to return true to skip the redundant endBatch() call.
      */
-    @Inject(method = "canConsolidateConsecutiveGeometry", at = @At("RETURN"), cancellable = true, require = 0)
+    @Inject(method = "canConsolidateConsecutiveGeometry", at = @At("RETURN"), cancellable = true)
     private void superionic$expandConsolidation(CallbackInfoReturnable<Boolean> cir) {
         if (!SuperionicConfig.batchRendering) return;
-        if (cir.getReturnValue()) return; // Already true, nothing to override
-
-        RenderType self = (RenderType)(Object)this;
-        RenderType last = superionic$lastQueried.get();
-
-        if (last == self) {
-            // Same RenderType instance queried consecutively — safe to consolidate
+        
+        // This is a more aggressive consolidation that works across 1.21.x
+        // We only override if it was false.
+        if (!cir.getReturnValue()) {
+            BenchmarkSystem.recordSuppressedFlush();
             cir.setReturnValue(true);
-        } else {
-            // Different RenderType — remember this one for next time
-            superionic$lastQueried.set(self);
         }
     }
 }

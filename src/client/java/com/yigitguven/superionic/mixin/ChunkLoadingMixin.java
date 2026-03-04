@@ -1,7 +1,7 @@
 package com.yigitguven.superionic.mixin;
  
 import com.yigitguven.superionic.SuperionicConfig;
-import net.minecraft.client.renderer.chunk.ChunkBuilder;
+// Removed failing import to allow compilation on 1.21.11
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * We optimize chunk rebuilding by prioritizing chunks that are closer 
  * to the player and within the field of view.
  */
-@Mixin(ChunkBuilder.RenderChunk.class)
+@Mixin(targets = "net.minecraft.client.renderer.chunk.SectionRenderDispatcher$RenderSection")
 public abstract class ChunkLoadingMixin {
  
     /**

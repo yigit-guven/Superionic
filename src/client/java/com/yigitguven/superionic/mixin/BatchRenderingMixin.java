@@ -75,9 +75,8 @@ public abstract class BatchRenderingMixin {
         method = "getBuffer(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch(Lnet/minecraft/client/renderer/rendertype/RenderType;Lcom/mojang/blaze3d/vertex/BufferBuilder;)V"
-        ),
-        require = 0
+            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
+        )
     )
     private void superionic$suppressEndBatchIfCompatible(
             MultiBufferSource.BufferSource self,
@@ -101,6 +100,8 @@ public abstract class BatchRenderingMixin {
             superionic$callEndBatch(self, superionic$pendingBatchType, superionic$pendingBatchBuilder);
         }
 
+        // We are suppressing this batch!
+        com.yigitguven.superionic.BenchmarkSystem.recordSuppressedFlush();
         superionic$pendingBatchType = existingType;
         superionic$pendingBatchBuilder = existingBuilder;
     }

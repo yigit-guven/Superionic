@@ -13,6 +13,10 @@ public class SuperionicConfig {
     private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "superionic.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    static {
+        load();
+    }
+
     public static boolean batchRendering = true;
     public static boolean hudBatching = true;
     public static boolean entitySorting = true;
@@ -25,6 +29,8 @@ public class SuperionicConfig {
     public static boolean reduceAllocations = true;
     public static boolean fastChunkLoading = true;
     public static boolean packetCompressionTuning = true;
+    public static double particleRenderDistance = 64.0;
+    public static boolean enableBenchmarks = false;
 
     public static void load() {
         if (!CONFIG_FILE.exists()) {
@@ -49,6 +55,8 @@ public class SuperionicConfig {
                 if (config.reduceAllocations != null) reduceAllocations = config.reduceAllocations;
                 if (config.fastChunkLoading != null) fastChunkLoading = config.fastChunkLoading;
                 if (config.packetCompressionTuning != null) packetCompressionTuning = config.packetCompressionTuning;
+                if (config.particleRenderDistance != null) particleRenderDistance = config.particleRenderDistance;
+                if (config.enableBenchmarks != null) enableBenchmarks = config.enableBenchmarks;
             }
         } catch (IOException e) {
             SuperionicClient.LOGGER.error("Failed to load config!", e);
@@ -63,7 +71,8 @@ public class SuperionicConfig {
                 batchRendering, hudBatching, entitySorting, showPerformanceToast, 
                 particleCulling, entityShadowCulling, fastLeaves, 
                 fastChestRendering, aiThrottling, reduceAllocations, 
-                fastChunkLoading, packetCompressionTuning), writer);
+                fastChunkLoading, packetCompressionTuning, particleRenderDistance,
+                enableBenchmarks), writer);
         } catch (IOException e) {
             SuperionicClient.LOGGER.error("Failed to save config!", e);
         }
@@ -81,5 +90,7 @@ public class SuperionicConfig {
             Boolean aiThrottling,
             Boolean reduceAllocations,
             Boolean fastChunkLoading,
-            Boolean packetCompressionTuning) {}
+            Boolean packetCompressionTuning,
+            Double particleRenderDistance,
+            Boolean enableBenchmarks) {}
 }

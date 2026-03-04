@@ -1,5 +1,6 @@
 package com.yigitguven.superionic.mixin;
  
+import com.yigitguven.superionic.BenchmarkSystem;
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Collection;
 import java.util.Iterator;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Implements Particle Culling for Minecraft 1.21.11.
@@ -28,11 +30,10 @@ public class ParticleBatchingMixin {
      * This reduces the amount of data sent to the GPU and CPU processing time per particle.
      */
     @Redirect(
-        method = "extract",
-        at = @At(value = "INVOKE", target = "Ljava/util/Collection;iterator()Ljava/util/Iterator;"),
-        require = 0
+        method = "render",
+        at = @At(value = "INVOKE", target = "Ljava/util/Collection;iterator()Ljava/util/Iterator;")
     )
-    private Iterator<Particle> superionic$cullParticles(Collection<Particle> collection, Frustum frustum, Camera camera) {
+    private Iterator<Particle> superionic$cullParticles(Collection<Particle> collection, com.mojang.blaze3d.vertex.PoseStack poseStack, net.minecraft.client.renderer.MultiBufferSource vertexConsumers, net.minecraft.client.renderer.LightTexture lightTexture, Camera camera, float tickDelta) {
         Iterator<Particle> original = collection.iterator();
         if (!SuperionicConfig.particleCulling) return original;
 
@@ -45,10 +46,20 @@ public class ParticleBatchingMixin {
                 if (!checked) {
                     while (original.hasNext()) {
                         Particle p = original.next();
-                        if (p.getBoundingBox() == null || frustum.isVisible(p.getBoundingBox())) {
-                            next = p;
-                            break;
+                        Vec3 cameraPos = ((CameraAccessor)camera).getPosition();
+                        double dx = ((ParticleAccessor)p).getX() - cameraPos.x;
+                        double dy = ((ParticleAccessor)p).getY() - cameraPos.y;
+                        double dz = ((ParticleAccessor)p).getZ() - cameraPos.z;
+                        double distSq = dx * dx + dy * dy + dz * dz;
+                        double maxDistSq = SuperionicConfig.particleRenderDistance * SuperionicConfig.particleRenderDistance;
+
+                        if (distSq > maxDistSq) {
+                            BenchmarkSystem.recordCulledParticle();
+                            continue;
                         }
+                        
+                        next = p;
+                        break;
                     }
                     checked = true;
                 }
