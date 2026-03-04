@@ -63,6 +63,11 @@ public abstract class BatchRenderingMixin {
             MultiBufferSource.BufferSource self,
             RenderType existingType) {
 
+        if (!SuperionicConfig.enabled) {
+            self.endBatch(existingType);
+            return;
+        }
+
         if (!SuperionicConfig.batchRendering) {
             self.endBatch(existingType);
             return;

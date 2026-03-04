@@ -44,6 +44,7 @@ public class EntityBatchingMixin {
             Camera camera, Frustum frustum, DeltaTracker deltaTracker,
             LevelRenderState levelRenderState, CallbackInfo ci) {
 
+        if (!SuperionicConfig.enabled) return;
         if (!SuperionicConfig.entitySorting) return;
 
         Minecraft mc = Minecraft.getInstance();

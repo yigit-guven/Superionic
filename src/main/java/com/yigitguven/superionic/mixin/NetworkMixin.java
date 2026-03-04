@@ -21,7 +21,7 @@ public class NetworkMixin {
      */
     @ModifyVariable(method = "setupCompression", at = @At("HEAD"), argsOnly = true)
     private int superionic$optimizeCompressionThreshold(int threshold) {
-        if (SuperionicConfig.packetCompressionTuning && threshold > 0 && threshold < 512) {
+        if (SuperionicConfig.enabled && SuperionicConfig.packetCompressionTuning && threshold > 0 && threshold < 512) {
             return 512;
         }
         return threshold;

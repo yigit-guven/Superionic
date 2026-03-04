@@ -30,6 +30,8 @@ public class AllocationMixin {
      */
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
     private void superionic$cullEntity(Entity entity, net.minecraft.client.renderer.culling.Frustum frustum, double x, double y, double z, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<Boolean> cir) {
+        if (!SuperionicConfig.enabled) return;
+        if (entity == null) return;
         if (!SuperionicConfig.reduceAllocations && !SuperionicConfig.entityShadowCulling) return;
         
         double distSq = entity.distanceToSqr(net.minecraft.client.Minecraft.getInstance().player);

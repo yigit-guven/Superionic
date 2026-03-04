@@ -31,6 +31,7 @@ public class ParticleBatchingMixin {
      */
     @org.spongepowered.asm.mixin.injection.Inject(method = "createParticle", at = @At("HEAD"), cancellable = true)
     private void superionic$cullNewParticle(net.minecraft.core.particles.ParticleOptions options, double x, double y, double z, double dx, double dy, double dz, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<Particle> cir) {
+        if (!SuperionicConfig.enabled) return;
         if (!SuperionicConfig.particleCulling) return;
         
         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();

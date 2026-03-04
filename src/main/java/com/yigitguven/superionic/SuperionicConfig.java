@@ -30,6 +30,7 @@ public class SuperionicConfig {
     public static boolean fastChunkLoading = true;
     public static boolean packetCompressionTuning = true;
     public static boolean enableBenchmarks = true;
+    public static boolean enabled = true;
 
     // Distances and Rates
     public static int entityCullingDistance = 128;
@@ -60,6 +61,7 @@ public class SuperionicConfig {
                 if (config.fastChunkLoading != null) fastChunkLoading = config.fastChunkLoading;
                 if (config.packetCompressionTuning != null) packetCompressionTuning = config.packetCompressionTuning;
                 if (config.enableBenchmarks != null) enableBenchmarks = config.enableBenchmarks;
+                if (config.enabled != null) enabled = config.enabled;
                 
                 if (config.entityCullingDistance != null) entityCullingDistance = config.entityCullingDistance;
                 if (config.shadowCullingDistance != null) shadowCullingDistance = config.shadowCullingDistance;
@@ -80,6 +82,7 @@ public class SuperionicConfig {
                 particleCulling, entityShadowCulling, fastLeaves, 
                 fastChestRendering, aiThrottling, reduceAllocations, 
                 fastChunkLoading, packetCompressionTuning, enableBenchmarks,
+                enabled,
                 entityCullingDistance, shadowCullingDistance, aiThrottlingDistance,
                 aiThrottlingRate, particleCullingDistance), writer);
         } catch (IOException e) {
@@ -101,6 +104,7 @@ public class SuperionicConfig {
             Boolean fastChunkLoading,
             Boolean packetCompressionTuning,
             Boolean enableBenchmarks,
+            Boolean enabled,
             Integer entityCullingDistance,
             Integer shadowCullingDistance,
             Integer aiThrottlingDistance,

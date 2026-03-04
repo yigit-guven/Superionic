@@ -28,6 +28,7 @@ public abstract class ChestRendererMixin {
      */
     @Inject(method = "extractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState;FLnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V", at = @At("RETURN"))
     private void superionic$fastChestRender(BlockEntity blockEntity, ChestRenderState chestRenderState, float f, Vec3 vec3, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, CallbackInfo ci) {
+        if (!SuperionicConfig.enabled) return;
         if (SuperionicConfig.fastChestRendering) {
             // Draw a basic, non-animated chest box instead of the full model.
             // This relies on having a pre-built static VBO for the chest, 

@@ -22,7 +22,7 @@ public abstract class ChunkLoadingMixin {
      */
     @Inject(method = "run", at = @At("HEAD"))
     private void superionic$prioritizeVisibleChunks(CallbackInfo ci) {
-        if (!SuperionicConfig.fastChunkLoading) return;
+        if (!SuperionicConfig.enabled || !SuperionicConfig.fastChunkLoading) return;
         
         // In a real implementation, we would modify the task's priority 
         // in the ChunkBuilder's queue. For 1.21.11, the SectionRenderDispatcher

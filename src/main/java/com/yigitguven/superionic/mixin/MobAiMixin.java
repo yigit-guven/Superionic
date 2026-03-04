@@ -25,6 +25,7 @@ public abstract class MobAiMixin {
      */
     @Inject(method = "aiStep", at = @At("HEAD"), cancellable = true)
     private void superionic$throttleDistantAi(CallbackInfo ci) {
+        if (!SuperionicConfig.enabled) return;
         if (!SuperionicConfig.aiThrottling) return;
 
         Mob self = (Mob) (Object) this;

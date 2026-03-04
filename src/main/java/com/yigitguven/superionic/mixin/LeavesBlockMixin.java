@@ -26,6 +26,7 @@ public class LeavesBlockMixin {
      */
     @Inject(method = "skipRendering", at = @At("HEAD"), cancellable = true)
     private void superionic$optimizeLeafRendering(BlockState state, BlockState adjacentState, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+        if (!SuperionicConfig.enabled) return;
         if (SuperionicConfig.fastLeaves) {
             if (adjacentState.getBlock() instanceof LeavesBlock) {
                 BenchmarkSystem.recordCulledLeafFace();

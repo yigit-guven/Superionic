@@ -20,6 +20,12 @@ public class SuperionicMenu implements ModMenuApi {
             // --- GENERAL CATEGORY ---
             ConfigCategory general = builder.getOrCreateCategory(Component.literal("General"));
             
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Master Toggle"), SuperionicConfig.enabled)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Master switch to enable or disable all Superionic optimizations at once."))
+                .setSaveConsumer(newValue -> SuperionicConfig.enabled = newValue)
+                .build());
+
             general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Performance Toast"), SuperionicConfig.showPerformanceToast)
                 .setDefaultValue(false)
                 .setTooltip(Component.literal("Shows an on-screen overlay with FPS, memory, entity and particle counts."))
