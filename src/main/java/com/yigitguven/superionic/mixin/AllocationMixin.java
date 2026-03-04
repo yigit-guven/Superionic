@@ -20,26 +20,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(EntityRenderDispatcher.class)
 public class AllocationMixin {
+    static {
+        System.out.println("[SUPERIONIC-STATIC] AllocationMixin class loaded!");
+    }
  
     /**
      * Skip the entire rendering stack (including PoseStack allocations)
      * for distant entities when the optimization is enabled.
      */
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private <E extends Entity> void superionic$reduceEntityAllocations(E entity, double x, double y, double z, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, CallbackInfo ci) {
+    @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
+    private void superionic$cullEntity(Entity entity, net.minecraft.client.renderer.culling.Frustum frustum, double x, double y, double z, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<Boolean> cir) {
         if (!SuperionicConfig.reduceAllocations && !SuperionicConfig.entityShadowCulling) return;
         
-        double distSq = x * x + y * y + z * z;
+        double distSq = entity.distanceToSqr(net.minecraft.client.Minecraft.getInstance().player);
 
-        // Shadow Culling (Distance-based)
-        if (SuperionicConfig.entityShadowCulling && distSq > 576) { // 24 blocks
+        // Shadow Culling (Ultra-aggressive debug)
+        if (SuperionicConfig.entityShadowCulling && distSq > 1.0) { 
             BenchmarkSystem.recordCulledShadow();
         }
 
-        // Allocation Reduction (Distance-based)
-        if (SuperionicConfig.reduceAllocations && distSq > 4096) { // 64 blocks
+        // Entity Culling / Allocation Reduction (Ultra-aggressive debug)
+        if (SuperionicConfig.reduceAllocations && distSq > 1.0) { 
              BenchmarkSystem.recordSkippedAllocation();
-             ci.cancel();
+             cir.setReturnValue(false);
         }
     }
 }

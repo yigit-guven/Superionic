@@ -21,14 +21,7 @@ repositories {
 }
 
 loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"superionic" {
-			sourceSet sourceSets.client
-		}
-	}
-
+	// Standard project structure
 }
 
 dependencies {

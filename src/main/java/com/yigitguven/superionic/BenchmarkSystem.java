@@ -20,7 +20,7 @@ public class BenchmarkSystem {
     private static final AtomicLong skippedAiTicks = new AtomicLong(0);
     private static final AtomicLong skippedAllocations = new AtomicLong(0);
 
-    private static final long LOG_INTERVAL_MS = 60000; // Log every 60 seconds
+    private static final long LOG_INTERVAL_MS = 5000; // 5 seconds for debugging
     private static long lastLogTime = System.currentTimeMillis();
 
     public static void recordSuppressedFlush() { suppressedFlushes.incrementAndGet(); }

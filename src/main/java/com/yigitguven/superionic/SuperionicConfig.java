@@ -30,7 +30,7 @@ public class SuperionicConfig {
     public static boolean fastChunkLoading = true;
     public static boolean packetCompressionTuning = true;
     public static double particleRenderDistance = 64.0;
-    public static boolean enableBenchmarks = false;
+    public static boolean enableBenchmarks = true;
 
     public static void load() {
         if (!CONFIG_FILE.exists()) {

@@ -36,11 +36,14 @@ public class LeavesBlockMixin {
  
     /**
      * Injects into the light propagation logic to treat leaves as solid blocks.
+     * DISABLED: propagatesSkylightDown is missing/renamed in 1.21.11
      */
+    /*
     @Inject(method = "propagatesSkylightDown", at = @At("HEAD"), cancellable = true)
     private void superionic$fastLeavesLightMapping(BlockState state, net.minecraft.world.level.BlockGetter level, net.minecraft.core.BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (SuperionicConfig.fastLeaves) {
             cir.setReturnValue(false);
         }
     }
+    */
 }

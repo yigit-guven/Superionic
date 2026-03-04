@@ -44,119 +44,61 @@ import java.util.AbstractMap;
 @Mixin(MultiBufferSource.BufferSource.class)
 public abstract class BatchRenderingMixin {
 
-    /**
-     * Cache of (RenderType, RenderType) -> canBatch result.
-     * Uses string-based pipeline name comparison since RenderType.equals() does a full deep check.
-     */
     @Unique
     private static final Map<Long, Boolean> superionic$batchCache = new ConcurrentHashMap<>(256);
 
-    /**
-     * The RenderType that was being drawn when we last suppressed an endBatch().
-     * Tracked so we can flush it properly when a truly incompatible type arrives.
-     */
     @Unique
     private RenderType superionic$pendingBatchType = null;
 
-    /**
-     * The BufferBuilder associated with the pending (suppressed) batch.
-     */
-    @Unique
-    private BufferBuilder superionic$pendingBatchBuilder = null;
+    @Shadow public abstract void endBatch(RenderType renderType);
 
-    /**
-     * Redirect the endBatch(RenderType, BufferBuilder) call inside getBuffer().
-     * This is the HOT PATH — it fires every time a new RenderType is requested
-     * while another is still active. We suppress it when the types share a pipeline.
-     *
-     * Using require=0 means the game won't crash if Mojang refactors this call.
-     */
     @Redirect(
         method = "getBuffer(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V"
+            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch(Lnet/minecraft/client/renderer/rendertype/RenderType;)V"
         )
     )
     private void superionic$suppressEndBatchIfCompatible(
             MultiBufferSource.BufferSource self,
-            RenderType existingType,
-            BufferBuilder existingBuilder) {
+            RenderType existingType) {
 
         if (!SuperionicConfig.batchRendering) {
-            // Feature off — call normally
-            superionic$callEndBatch(self, existingType, existingBuilder);
+            self.endBatch(existingType);
             return;
         }
 
-        // We don't know the incoming type at this Redirect point (it's the arg to getBuffer()),
-        // so we track the pending batch and flush it on the NEXT incompatible call.
-        // This is equivalent to "defer the flush until we're sure we can't consolidate".
-        //
-        // Strategy: if we already have a pending type, flush it now (it means THREE different
-        // types in a row). Then make the current 'existingType' the new pending.
-        if (superionic$pendingBatchType != null && superionic$pendingBatchBuilder != null) {
-            // Flush the previously deferred batch
-            superionic$callEndBatch(self, superionic$pendingBatchType, superionic$pendingBatchBuilder);
+        if (superionic$pendingBatchType != null) {
+            self.endBatch(superionic$pendingBatchType);
         }
 
-        // We are suppressing this batch!
         com.yigitguven.superionic.BenchmarkSystem.recordSuppressedFlush();
         superionic$pendingBatchType = existingType;
-        superionic$pendingBatchBuilder = existingBuilder;
     }
 
-    /**
-     * After getBuffer() returns, flush any pending batch if it wasn't consumed.
-     * This is the TAIL injection that acts as a safety flush.
-     */
     @Inject(
         method = "getBuffer(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
-        at = @At("RETURN"),
-        require = 0
+        at = @At("RETURN")
     )
     private void superionic$flushPendingOnReturn(RenderType incomingType, CallbackInfoReturnable<VertexConsumer> cir) {
         if (!SuperionicConfig.batchRendering) return;
 
-        // If pending type == incoming type, we're consolidating — leave pending until endBatch() is called
         if (superionic$pendingBatchType != null && superionic$pendingBatchType != incomingType) {
-            // The incoming type doesn't match the deferred one — flush the deferred one now
-            superionic$callEndBatch((MultiBufferSource.BufferSource)(Object)this, superionic$pendingBatchType, superionic$pendingBatchBuilder);
+            ((MultiBufferSource.BufferSource)(Object)this).endBatch(superionic$pendingBatchType);
             superionic$pendingBatchType = null;
-            superionic$pendingBatchBuilder = null;
         } else if (superionic$pendingBatchType != null && superionic$pendingBatchType == incomingType) {
-            // Same type — we successfully deferred the flush. Clear pending since the builder was reused.
             superionic$pendingBatchType = null;
-            superionic$pendingBatchBuilder = null;
         }
     }
 
-    /**
-     * When endBatch() (no-arg) is called, flush any remaining pending batch first.
-     */
-    @Inject(method = "endBatch()V", at = @At("HEAD"), require = 0)
+    @Inject(method = "endBatch()V", at = @At("HEAD"))
     private void superionic$flushPendingOnEndBatch(org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci) {
-        if (superionic$pendingBatchType != null && superionic$pendingBatchBuilder != null) {
-            superionic$callEndBatch((MultiBufferSource.BufferSource)(Object)this, superionic$pendingBatchType, superionic$pendingBatchBuilder);
+        if (superionic$pendingBatchType != null) {
+            ((MultiBufferSource.BufferSource)(Object)this).endBatch(superionic$pendingBatchType);
             superionic$pendingBatchType = null;
-            superionic$pendingBatchBuilder = null;
         }
     }
 
-    /**
-     * Calls the private endBatch(RenderType, BufferBuilder) via the public endBatch(RenderType),
-     * which internally does the same thing (removes from startedBuilders map and calls private).
-     * We use this as a safe call path.
-     */
-    @Unique
-    private void superionic$callEndBatch(MultiBufferSource.BufferSource self, RenderType type, BufferBuilder builder) {
-        self.endBatch(type);
-    }
-
-    /**
-     * Computes a cache key from two RenderTypes using their identity hash codes.
-     * This gives O(1) cache lookups without invoking equals().
-     */
     @Unique
     private static long superionic$cacheKey(RenderType a, RenderType b) {
         return ((long) System.identityHashCode(a) << 32) | (System.identityHashCode(b) & 0xFFFFFFFFL);

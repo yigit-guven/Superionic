@@ -11,13 +11,14 @@
 		"EntityBatchingMixin",
 		"PerformanceToastMixin",
 		"LeavesBlockMixin",
-		"ChestRendererMixin",
 		"MobAiMixin",
 		"AllocationMixin",
 		"ChunkLoadingMixin",
-		"NetworkMixin"
+		"ChestRendererMixin",
+		"NetworkMixin",
+		"DiagnosticMixin"
 	],
 	"injectors": {
-		"defaultRequire": 0
+		"defaultRequire": 1
 	}
 }

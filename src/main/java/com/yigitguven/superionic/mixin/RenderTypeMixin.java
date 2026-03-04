@@ -37,10 +37,12 @@ public class RenderTypeMixin {
      * If it would return false, check if we've seen this exact type consecutively —
      * if so, override to return true to skip the redundant endBatch() call.
      */
+    /*
     @Inject(method = "canConsolidateConsecutiveGeometry", at = @At("RETURN"), cancellable = true)
     private void superionic$expandConsolidation(CallbackInfoReturnable<Boolean> cir) {
         if (!SuperionicConfig.batchRendering) return;
         
+        System.out.println("[SUPERIONIC-DEBUG] RenderTypeMixin firing");
         // This is a more aggressive consolidation that works across 1.21.x
         // We only override if it was false.
         if (!cir.getReturnValue()) {
@@ -48,4 +50,5 @@ public class RenderTypeMixin {
             cir.setReturnValue(true);
         }
     }
+    */
 }
