@@ -38,13 +38,13 @@ Our primary goal is **State Consolidation**: identifying redundant operations an
 - **🧍 Entity Type Sorting**: Re-orders the visibility list after extraction to group entities by their internal type hash. This ensures that the batching system can process identical models/textures consecutively, minimizing state switches.
 - **🍃 Optimized Leaf Rendering**: Implements a highly efficient "Fast Leaves" path that performs actual face culling between adjacent leaf blocks. By treating leaves as opaque during the skip-render check, we eliminate hundreds of redundant faces in forest biomes.
 - **📦 Fast Chest Rendering**: Provides a simplified rendering path for `ChestBlockEntity`. By disabling animation interpolation and lid openness checks at long ranges, we reduce the vertex processing cost of storage rooms.
-- **💨 Particle Culling**: Injects a frustum-check during the `ParticleEngine` extraction phase. Off-screen particles are skipped before they reach the vertex-processing stage.
+- **💨 Particle Culling**: Injects a frustum-check during the `ParticleEngine` extraction phase. Off-screen and distant particles are skipped before they reach the vertex-processing stage. Max distance is user-configurable.
 
 ### 2. Logic & Tick Precision
 *Focus: Reducing CPU-side "math" overhead per tick.*
 
-- **🤖 AI Pathfinding Throttling**: Mobs beyond a 48-block radius of the player have their `aiStep` frequency reduced by 75%. This preserves world behavior while slashing the CPU time spent on pathing calculations that don't immediately affect the player.
-- **👥 Entity Shadow Culling**: Shadows are computation-heavy. Superionic disables shadow calculations for entities beyond 32 blocks, maintaining nearby immersion while freeing up CPU cycles.
+- **🤖 AI Pathfinding Throttling**: Mobs beyond a configurable radius of the player have their update frequency reduced. This preserves world behavior while slashing the CPU time spent on pathing calculations.
+- **👥 Entity Shadow Culling**: Shadows are computation-heavy. Superionic disables shadow calculations for distant entities, maintaining nearby immersion while freeing up CPU cycles. Both distance and throttling intensity are fully adjustable.
 
 ### 3. Memory & JVM Performance
 *Focus: Minimizing Garbage Collection (GC) impact.*
@@ -80,7 +80,12 @@ Superionic is fully configurable. Settings are stored at `.minecraft/config/supe
 | `fastLeaves` | `false` | GPU | Aggressive face culling for leaf blocks |
 | `fastChestRendering` | `true` | GPU | Skip animations for storage blocks |
 | `aiThrottling` | `true` | Logic | Reduces distant mob AI update frequency |
+| `aiThrottlingDistance` | `64` | AI | Radius (blocks) before AI throttling starts |
+| `aiThrottlingRate` | `4` | AI | Frequency of AI updates for distant mobs |
 | `particleCulling` | `true` | GPU | Skips off-screen particle processing |
+| `particleCullingDistance` | `64` | GPU | Radius (blocks) for particle visibility |
+| `entityCullingDistance` | `128` | GPU | Radius (blocks) for full entity visibility |
+| `shadowCullingDistance` | `64` | GPU | Radius (blocks) for entity shadows |
 | `entityShadowCulling` | `true` | Logic | Disables shadows for distant entities |
 | `reduceAllocations` | `true` | Memory | Skip temporary object creation in hot paths |
 | `packetCompressionTuning` | `true` | Net | Optimize compression for better CPU balance |

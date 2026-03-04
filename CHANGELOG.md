@@ -1,12 +1,19 @@
-- Rebranded project to Superionic
-- Updated documentation for Modrinth compliance
-- Added technical implementation and performance evidence sections to README
-- Added **Particle Culling**: Skips off-screen or distant particles to reduce GPU load
-- Added **Entity Shadow Culling**: Distance-based culling for entity shadows (32-block radius)
-- Added **Fast Leaves**: Implements opaque-like rendering for leaves to boost FPS in forests
-- Added **Fast Chest Rendering**: Simplified model and animation path for chests
-- Added **AI Pathfinding Throttling**: Reduced update frequency for distant mob AI
-- Added **Allocation Reduction**: Minimized temporary object creation in hot paths
-- Added **Fast Chunk Loading**: Optimized thread priorities for world loading
-- Added **Network Tuning**: Refined packet compression and tracking logic
-- Updated configuration menu and JSON to support new toggles
+- **Project Rebranded**: Fully transitioned from UPM to **Superionic**.
+- **New Branding**: Implemented signature **Dark Yellow/Orange** and **Cyan** color scheme in the UI.
+- **Enhanced Performance Toast**: Redesigned the in-game overlay with high-contrast colors and a cleaner layout.
+- **Categorized Menu**: The ModMenu configuration is now organized into **General**, **Rendering**, **AI & Physics**, and **Network** categories.
+- **Granular Control**: Added sliders for culling distances:
+  - **Entity Culling**: 32 to 512 blocks.
+  - **Shadow Culling**: 8 to 128 blocks.
+  - **Particle Culling**: 16 to 256 blocks.
+  - **AI Throttling Distance**: threshold for distant mob optimization.
+- **AI Throttling Rate**: Control over how many AI ticks are skipped for distant mobs.
+- **Fixed Invisible Chests**: Resolved an issue where chests would disappear with Fast Chests enabled; now use a smarter static-lid hook.
+- **Improved Benchmarking**: Fixed the telemetry system to accurately record optimization metrics across all modules.
+- **Particle Culling**: Implemented distance-based and view-frustum culling for particles.
+- **Fast Leaves**: Optimized leaf rendering for significant FPS gains in dense forests.
+- **AI Throttling**: Efficiently reduces CPU load from distant mobs without affecting close-range interactions.
+- **Allocation Reduction**: Minimized object churn in rendering hot paths.
+- **Modrinth Compliance**: Rewrote the README for clarity and removed hyperbolic claims.
+- **Technical Deep Dive**: Added detailed explanations of how each optimization module works.
+- **Performance Evidence**: Integrated benchmark methodology into the core project documentation.
