@@ -1,28 +1,28 @@
 {
 	"schemaVersion": 1,
-	"id": "upm",
+	"id": "superionic",
 	"version": "${version}",
-	"name": "Ultimate Performance Mod",
-	"description": "Highly optimized client-side performance improvements.",
+	"name": "Superionic",
+	"description": "An all-in-one optimization suite that boosts FPS and eliminates stutters by revamping Minecraft's rendering and logic.",
 	"authors": [
 		"Yigit Guven"
 	],
 	"contact": {
-		"homepage": "https://github.com/yigit-guven/Ultimate-Performance-Mod",
-		"sources": "https://github.com/yigit-guven/Ultimate-Performance-Mod",
-		"issues": "https://github.com/yigit-guven/Ultimate-Performance-Mod/issues",
+		"homepage": "https://github.com/yigit-guven/Superionic",
+		"sources": "https://github.com/yigit-guven/Superionic",
+		"issues": "https://github.com/yigit-guven/Superionic/issues",
 		"discord": "https://discord.gg/gNajXYku5z",
-		"wiki": "https://github.com/yigit-guven/Ultimate-Performance-Mod/wiki"
+		"wiki": "https://github.com/yigit-guven/Superionic/wiki"
 	},
 	"license": "GPL-3.0",
-	"icon": "assets/upm/icon.png",
+	"icon": "assets/superionic/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.yigitguven.upm.UltimatePerformanceModClient"
+			"com.yigitguven.superionic.SuperionicClient"
 		],
 		"modmenu": [
-			"com.yigitguven.upm.UltimatePerformanceModMenu"
+			"com.yigitguven.superionic.SuperionicMenu"
 		]
 	},
 	"custom": {
@@ -37,7 +37,7 @@
 	},
 	"mixins": [
 		{
-			"config": "upm.client.mixins.json",
+			"config": "superionic.client.mixins.json",
 			"environment": "client"
 		}
 	],

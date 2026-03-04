@@ -1,6 +1,6 @@
-package com.yigitguven.upm.mixin;
+package com.yigitguven.superionic.mixin;
 
-import com.yigitguven.upm.UltimatePerformanceModConfig;
+import com.yigitguven.superionic.SuperionicConfig;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -49,20 +49,20 @@ public abstract class BatchRenderingMixin {
      * Uses string-based pipeline name comparison since RenderType.equals() does a full deep check.
      */
     @Unique
-    private static final Map<Long, Boolean> upm$batchCache = new ConcurrentHashMap<>(256);
+    private static final Map<Long, Boolean> superionic$batchCache = new ConcurrentHashMap<>(256);
 
     /**
      * The RenderType that was being drawn when we last suppressed an endBatch().
      * Tracked so we can flush it properly when a truly incompatible type arrives.
      */
     @Unique
-    private RenderType upm$pendingBatchType = null;
+    private RenderType superionic$pendingBatchType = null;
 
     /**
      * The BufferBuilder associated with the pending (suppressed) batch.
      */
     @Unique
-    private BufferBuilder upm$pendingBatchBuilder = null;
+    private BufferBuilder superionic$pendingBatchBuilder = null;
 
     /**
      * Redirect the endBatch(RenderType, BufferBuilder) call inside getBuffer().
@@ -79,14 +79,14 @@ public abstract class BatchRenderingMixin {
         ),
         require = 0
     )
-    private void upm$suppressEndBatchIfCompatible(
+    private void superionic$suppressEndBatchIfCompatible(
             MultiBufferSource.BufferSource self,
             RenderType existingType,
             BufferBuilder existingBuilder) {
 
-        if (!UltimatePerformanceModConfig.batchRendering) {
+        if (!SuperionicConfig.batchRendering) {
             // Feature off — call normally
-            upm$callEndBatch(self, existingType, existingBuilder);
+            superionic$callEndBatch(self, existingType, existingBuilder);
             return;
         }
 
@@ -96,13 +96,13 @@ public abstract class BatchRenderingMixin {
         //
         // Strategy: if we already have a pending type, flush it now (it means THREE different
         // types in a row). Then make the current 'existingType' the new pending.
-        if (upm$pendingBatchType != null && upm$pendingBatchBuilder != null) {
+        if (superionic$pendingBatchType != null && superionic$pendingBatchBuilder != null) {
             // Flush the previously deferred batch
-            upm$callEndBatch(self, upm$pendingBatchType, upm$pendingBatchBuilder);
+            superionic$callEndBatch(self, superionic$pendingBatchType, superionic$pendingBatchBuilder);
         }
 
-        upm$pendingBatchType = existingType;
-        upm$pendingBatchBuilder = existingBuilder;
+        superionic$pendingBatchType = existingType;
+        superionic$pendingBatchBuilder = existingBuilder;
     }
 
     /**
@@ -114,19 +114,19 @@ public abstract class BatchRenderingMixin {
         at = @At("RETURN"),
         require = 0
     )
-    private void upm$flushPendingOnReturn(RenderType incomingType, CallbackInfoReturnable<VertexConsumer> cir) {
-        if (!UltimatePerformanceModConfig.batchRendering) return;
+    private void superionic$flushPendingOnReturn(RenderType incomingType, CallbackInfoReturnable<VertexConsumer> cir) {
+        if (!SuperionicConfig.batchRendering) return;
 
         // If pending type == incoming type, we're consolidating — leave pending until endBatch() is called
-        if (upm$pendingBatchType != null && upm$pendingBatchType != incomingType) {
+        if (superionic$pendingBatchType != null && superionic$pendingBatchType != incomingType) {
             // The incoming type doesn't match the deferred one — flush the deferred one now
-            upm$callEndBatch((MultiBufferSource.BufferSource)(Object)this, upm$pendingBatchType, upm$pendingBatchBuilder);
-            upm$pendingBatchType = null;
-            upm$pendingBatchBuilder = null;
-        } else if (upm$pendingBatchType != null && upm$pendingBatchType == incomingType) {
+            superionic$callEndBatch((MultiBufferSource.BufferSource)(Object)this, superionic$pendingBatchType, superionic$pendingBatchBuilder);
+            superionic$pendingBatchType = null;
+            superionic$pendingBatchBuilder = null;
+        } else if (superionic$pendingBatchType != null && superionic$pendingBatchType == incomingType) {
             // Same type — we successfully deferred the flush. Clear pending since the builder was reused.
-            upm$pendingBatchType = null;
-            upm$pendingBatchBuilder = null;
+            superionic$pendingBatchType = null;
+            superionic$pendingBatchBuilder = null;
         }
     }
 
@@ -134,11 +134,11 @@ public abstract class BatchRenderingMixin {
      * When endBatch() (no-arg) is called, flush any remaining pending batch first.
      */
     @Inject(method = "endBatch()V", at = @At("HEAD"), require = 0)
-    private void upm$flushPendingOnEndBatch(org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci) {
-        if (upm$pendingBatchType != null && upm$pendingBatchBuilder != null) {
-            upm$callEndBatch((MultiBufferSource.BufferSource)(Object)this, upm$pendingBatchType, upm$pendingBatchBuilder);
-            upm$pendingBatchType = null;
-            upm$pendingBatchBuilder = null;
+    private void superionic$flushPendingOnEndBatch(org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci) {
+        if (superionic$pendingBatchType != null && superionic$pendingBatchBuilder != null) {
+            superionic$callEndBatch((MultiBufferSource.BufferSource)(Object)this, superionic$pendingBatchType, superionic$pendingBatchBuilder);
+            superionic$pendingBatchType = null;
+            superionic$pendingBatchBuilder = null;
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class BatchRenderingMixin {
      * We use this as a safe call path.
      */
     @Unique
-    private void upm$callEndBatch(MultiBufferSource.BufferSource self, RenderType type, BufferBuilder builder) {
+    private void superionic$callEndBatch(MultiBufferSource.BufferSource self, RenderType type, BufferBuilder builder) {
         self.endBatch(type);
     }
 
@@ -157,7 +157,7 @@ public abstract class BatchRenderingMixin {
      * This gives O(1) cache lookups without invoking equals().
      */
     @Unique
-    private static long upm$cacheKey(RenderType a, RenderType b) {
+    private static long superionic$cacheKey(RenderType a, RenderType b) {
         return ((long) System.identityHashCode(a) << 32) | (System.identityHashCode(b) & 0xFFFFFFFFL);
     }
 }

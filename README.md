@@ -1,4 +1,4 @@
-# ⚡ Ultimate Performance Mod
+# ⚡ Superionic
 
 <p align="center">
   <em>A comprehensive, all-in-one client performance suite for Minecraft.</em>
@@ -16,7 +16,7 @@
 
 ---
 
-**Ultimate Performance Mod (UPM)** is a client-side mod built with one goal: squeeze every frame out of Minecraft without compromising the experience. Rather than targeting a single subsystem, UPM is engineered as an **expanding suite of optimizations** — each release adding new improvements across rendering, memory, entity processing, and beyond.
+**Superionic (Superionic)** is a client-side mod built with one goal: squeeze every frame out of Minecraft without compromising the experience. Rather than targeting a single subsystem, Superionic is engineered as an **expanding suite of optimizations** — each release adding new improvements across rendering, memory, entity processing, and beyond.
 
 No visual changes. No server required. Just performance.
 
@@ -24,7 +24,7 @@ No visual changes. No server required. Just performance.
 
 ## Philosophy
 
-Most performance mods pick a lane — chunk rendering, server logic, memory management. UPM is different.
+Most performance mods pick a lane — chunk rendering, server logic, memory management. Superionic is different.
 
 Every part of the Minecraft client that can be made faster **will** be addressed. The roadmap covers the full stack: render pipeline batching, entity tick optimization, particle system efficiency, memory allocation patterns, JVM-level tuning hints, and more. Alpha releases focus on the rendering pipeline, but this is the foundation of something far broader.
 
@@ -37,13 +37,13 @@ If it costs CPU time or GPU time without adding to your experience, it's a targe
 This release establishes the rendering pipeline foundation:
 
 ### 🎨 Render Batching
-The core of Minecraft's GPU draw call system — `BufferSource.getBuffer()` — is intercepted to defer and group compatible buffer flushes. Rather than submitting each type switch to the GPU immediately, UPM batches compatible calls together, reducing total GPU submissions per frame.
+The core of Minecraft's GPU draw call system — `BufferSource.getBuffer()` — is intercepted to defer and group compatible buffer flushes. Rather than submitting each type switch to the GPU immediately, Superionic batches compatible calls together, reducing total GPU submissions per frame.
 
 ### 🔁 Consolidation Expansion
 Minecraft's built-in `canConsolidateConsecutiveGeometry` hint is extended to cover the most common real-world case: the same render type queried consecutively. When this fires, the active buffer is reused entirely — no flush, no state change, no wasted frame budget.
 
 ### 🧍 Entity Sorting
-Before entities enter the per-frame render state extraction phase, UPM sorts them by type. Entities of the same type share a model, texture set, and shader pipeline — processing them consecutively eliminates redundant GPU pipeline state switches.
+Before entities enter the per-frame render state extraction phase, Superionic sorts them by type. Entities of the same type share a model, texture set, and shader pipeline — processing them consecutively eliminates redundant GPU pipeline state switches.
 
 ### 📊 Performance Overlay
 An optional compact HUD overlay provides live insight into what your client is doing: frames per second, frame time, memory usage, visible entity count, and active particle count — all updated in real time.
@@ -53,7 +53,7 @@ An optional compact HUD overlay provides live insight into what your client is d
 ## Installation
 
 1. Place the `.jar` file into your `mods/` folder
-2. Launch the game — UPM activates automatically
+2. Launch the game — Superionic activates automatically
 
 ---
 
@@ -103,25 +103,25 @@ P: 203
 | Varied terrain with many distinct block surfaces | **Medium** — deferred flush reduces per-type overhead |
 | General survival gameplay | **Low to Medium** — consistent baseline improvement |
 
-> UPM targets render-thread and CPU bottlenecks. As more optimization modules ship, gains will broaden across all hardware profiles.
+> Superionic targets render-thread and CPU bottlenecks. As more optimization modules ship, gains will broaden across all hardware profiles.
 
 ---
 
 ## Compatibility
 
-UPM is **client-side only** — compatible with any server, vanilla or modded, without any server-side installation.
+Superionic is **client-side only** — compatible with any server, vanilla or modded, without any server-side installation.
 
-UPM operates at the entity and buffer-level rendering layer and does not interfere with chunk rendering, shader injection, or game logic systems. It is designed to layer cleanly alongside any other performance-oriented mods.
+Superionic operates at the entity and buffer-level rendering layer and does not interfere with chunk rendering, shader injection, or game logic systems. It is designed to layer cleanly alongside any other performance-oriented mods.
 
 ---
 
 ## Frequently Asked Questions
 
 **Does this change how the game looks?**
-No. UPM only modifies the timing and ordering of internal GPU buffer submissions. All rendered output is visually identical.
+No. Superionic only modifies the timing and ordering of internal GPU buffer submissions. All rendered output is visually identical.
 
 **Will this cause issues on anti-cheat servers?**
-UPM does not modify any game logic, movement, or network behavior — only the rendering pipeline. It is safe universally, but always verify with individual server policies.
+Superionic does not modify any game logic, movement, or network behavior — only the rendering pipeline. It is safe universally, but always verify with individual server policies.
 
 **When will new optimization modules ship?**
 New modules are added as they are tested and stable. Follow the [releases page](https://github.com/yigit-guven/Ultimate-Performance-Mod/releases) or the [Discord](https://discord.gg/gNajXYku5z) for updates.
@@ -134,7 +134,7 @@ New modules are added as they are tested and stable. Follow the [releases page](
 git clone https://github.com/yigit-guven/Ultimate-Performance-Mod.git
 cd Ultimate-Performance-Mod
 ./gradlew build
-# Output: build/libs/upm-<version>.jar
+# Output: build/libs/Superionic-<version>.jar
 ```
 
 Requires Java 21 or later. All dependencies are resolved automatically by Gradle.

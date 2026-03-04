@@ -1,4 +1,4 @@
-package com.yigitguven.upm;
+package com.yigitguven.superionic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,8 +9,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class UltimatePerformanceModConfig {
-    private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "ultimateperformancemod.json");
+public class SuperionicConfig {
+    private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "superionic.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static boolean batchRendering = true;
@@ -25,7 +25,7 @@ public class UltimatePerformanceModConfig {
         }
 
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
-            UltimatePerformanceModConfigData config = GSON.fromJson(reader, UltimatePerformanceModConfigData.class);
+            SuperionicConfigData config = GSON.fromJson(reader, SuperionicConfigData.class);
             if (config != null) {
                 // Only override the Java defaults if the field was present in the JSON
                 // (Gson will leave boxed Booleans as null if the key is missing)
@@ -35,7 +35,7 @@ public class UltimatePerformanceModConfig {
                 if (config.showPerformanceToast != null) showPerformanceToast = config.showPerformanceToast;
             }
         } catch (IOException e) {
-            UltimatePerformanceModClient.LOGGER.error("Failed to load config!", e);
+            SuperionicClient.LOGGER.error("Failed to load config!", e);
         }
         // Always save after loading to write any new/missing fields with their defaults.
         save();
@@ -43,13 +43,13 @@ public class UltimatePerformanceModConfig {
 
     public static void save() {
         try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-            GSON.toJson(new UltimatePerformanceModConfigData(batchRendering, hudBatching, entitySorting, showPerformanceToast), writer);
+            GSON.toJson(new SuperionicConfigData(batchRendering, hudBatching, entitySorting, showPerformanceToast), writer);
         } catch (IOException e) {
-            UltimatePerformanceModClient.LOGGER.error("Failed to save config!", e);
+            SuperionicClient.LOGGER.error("Failed to save config!", e);
         }
     }
 
-    private record UltimatePerformanceModConfigData(
+    private record SuperionicConfigData(
             Boolean batchRendering,
             Boolean hudBatching,
             Boolean entitySorting,

@@ -1,4 +1,4 @@
-package com.yigitguven.upm.mixin;
+package com.yigitguven.superionic.mixin;
 
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;

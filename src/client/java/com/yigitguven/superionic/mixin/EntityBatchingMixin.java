@@ -1,6 +1,6 @@
-package com.yigitguven.upm.mixin;
+package com.yigitguven.superionic.mixin;
 
-import com.yigitguven.upm.UltimatePerformanceModConfig;
+import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -40,11 +40,11 @@ public class EntityBatchingMixin {
         at = @At("HEAD"),
         require = 0
     )
-    private void upm$sortEntitiesBeforeExtraction(
+    private void superionic$sortEntitiesBeforeExtraction(
             Camera camera, Frustum frustum, DeltaTracker deltaTracker,
             LevelRenderState levelRenderState, CallbackInfo ci) {
 
-        if (!UltimatePerformanceModConfig.entitySorting) return;
+        if (!SuperionicConfig.entitySorting) return;
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;

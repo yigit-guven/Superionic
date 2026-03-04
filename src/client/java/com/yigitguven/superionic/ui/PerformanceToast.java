@@ -1,6 +1,6 @@
-package com.yigitguven.upm.ui;
+package com.yigitguven.superionic.ui;
 
-import com.yigitguven.upm.UltimatePerformanceModConfig;
+import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,12 +15,12 @@ public class PerformanceToast implements Toast {
 
     @Override
     public Object getToken() {
-        return "upm_performance_toast";
+        return "superionic_performance_toast";
     }
 
     @Override
     public Visibility getWantedVisibility() {
-        return UltimatePerformanceModConfig.showPerformanceToast ? Visibility.SHOW : Visibility.HIDE;
+        return SuperionicConfig.showPerformanceToast ? Visibility.SHOW : Visibility.HIDE;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class PerformanceToast implements Toast {
 
     @Override
     public void render(GuiGraphics graphics, Font font, long startTime) {
-        if (!UltimatePerformanceModConfig.showPerformanceToast) {
+        if (!SuperionicConfig.showPerformanceToast) {
             return;
         }
 

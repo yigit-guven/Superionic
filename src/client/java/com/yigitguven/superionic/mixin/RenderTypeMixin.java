@@ -1,6 +1,6 @@
-package com.yigitguven.upm.mixin;
+package com.yigitguven.superionic.mixin;
 
-import com.yigitguven.upm.UltimatePerformanceModConfig;
+import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RenderTypeMixin {
 
     @Unique
-    private static final ThreadLocal<RenderType> upm$lastQueried = new ThreadLocal<>();
+    private static final ThreadLocal<RenderType> superionic$lastQueried = new ThreadLocal<>();
 
     /**
      * Intercept canConsolidateConsecutiveGeometry() at RETURN.
@@ -37,19 +37,19 @@ public class RenderTypeMixin {
      * if so, override to return true to skip the redundant endBatch() call.
      */
     @Inject(method = "canConsolidateConsecutiveGeometry", at = @At("RETURN"), cancellable = true, require = 0)
-    private void upm$expandConsolidation(CallbackInfoReturnable<Boolean> cir) {
-        if (!UltimatePerformanceModConfig.batchRendering) return;
+    private void superionic$expandConsolidation(CallbackInfoReturnable<Boolean> cir) {
+        if (!SuperionicConfig.batchRendering) return;
         if (cir.getReturnValue()) return; // Already true, nothing to override
 
         RenderType self = (RenderType)(Object)this;
-        RenderType last = upm$lastQueried.get();
+        RenderType last = superionic$lastQueried.get();
 
         if (last == self) {
             // Same RenderType instance queried consecutively — safe to consolidate
             cir.setReturnValue(true);
         } else {
             // Different RenderType — remember this one for next time
-            upm$lastQueried.set(self);
+            superionic$lastQueried.set(self);
         }
     }
 }

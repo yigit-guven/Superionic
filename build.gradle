@@ -24,7 +24,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"upm" {
+		"superionic" {
 			sourceSet sourceSets.client
 		}
 	}
