@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/client/resources/assets/superionic/icon.png" alt="Superionic Banner" width="200">
+  <img src="src/client/resources/assets/superionic/icon.png" alt="Superionic Banner" width="1200">
 </p>
 
 <p align="center">
