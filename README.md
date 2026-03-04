@@ -1,7 +1,9 @@
-# ⚡ Superionic
+<p align="center">
+  <img src="src/client/resources/assets/superionic/icon.png" alt="Superionic Banner" width="200">
+</p>
 
 <p align="center">
-  <em>A comprehensive, all-in-one client performance suite for Minecraft.</em>
+  <em>An all-in-one optimization suite that boosts FPS and eliminates stutters by revamping Minecraft's rendering and logic.</em>
 </p>
 
 <p align="center">
@@ -10,13 +12,13 @@
   <img alt="License" src="https://img.shields.io/badge/License-GPL--3.0-red?style=flat-square">
   <img alt="Environment" src="https://img.shields.io/badge/Side-Client--Only-0078d4?style=flat-square">
   <a href="https://discord.gg/gNajXYku5z"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join-5865f2?style=flat-square&logo=discord&logoColor=white"></a>
-  <a href="https://www.curseforge.com/minecraft/mc-mods/ultimate-performance-mod"><img alt="CurseForge" src="https://img.shields.io/badge/CurseForge-Available-f16436?style=flat-square&logo=curseforge&logoColor=white"></a>
-  <a href="https://modrinth.com/mod/ultimate-performance-mod"><img alt="Modrinth" src="https://img.shields.io/badge/Modrinth-Available-00af5c?style=flat-square&logo=modrinth&logoColor=white"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/superionic"><img alt="CurseForge" src="https://img.shields.io/badge/CurseForge-Available-f16436?style=flat-square&logo=curseforge&logoColor=white"></a>
+  <a href="https://modrinth.com/mod/superionic"><img alt="Modrinth" src="https://img.shields.io/badge/Modrinth-Available-00af5c?style=flat-square&logo=modrinth&logoColor=white"></a>
 </p>
 
 ---
 
-**Superionic (Superionic)** is a client-side mod built with one goal: squeeze every frame out of Minecraft without compromising the experience. Rather than targeting a single subsystem, Superionic is engineered as an **expanding suite of optimizations** — each release adding new improvements across rendering, memory, entity processing, and beyond.
+**Superionic** is a client-side mod built with one goal: squeeze every frame out of Minecraft without compromising the experience. Rather than targeting a single subsystem, Superionic is engineered as an **expanding suite of optimizations** — each release adding new improvements across rendering, memory, entity processing, and beyond.
 
 No visual changes. No server required. Just performance.
 
@@ -59,7 +61,7 @@ An optional compact HUD overlay provides live insight into what your client is d
 
 ## Configuration
 
-Settings are stored at `.minecraft/config/ultimateperformancemod.json` and generated automatically on first launch. New options added in future versions appear automatically with their defaults — no manual migration needed.
+Settings are stored at `.minecraft/config/superionic.json` and generated automatically on first launch. New options added in future versions appear automatically with their defaults — no manual migration needed.
 
 ```json
 {
@@ -124,15 +126,15 @@ No. Superionic only modifies the timing and ordering of internal GPU buffer subm
 Superionic does not modify any game logic, movement, or network behavior — only the rendering pipeline. It is safe universally, but always verify with individual server policies.
 
 **When will new optimization modules ship?**
-New modules are added as they are tested and stable. Follow the [releases page](https://github.com/yigit-guven/Ultimate-Performance-Mod/releases) or the [Discord](https://discord.gg/gNajXYku5z) for updates.
+New modules are added as they are tested and stable. Follow the [releases page](https://github.com/yigit-guven/Superionic/releases) or the [Discord](https://discord.gg/gNajXYku5z) for updates.
 
 ---
 
 ## Building From Source
 
 ```bash
-git clone https://github.com/yigit-guven/Ultimate-Performance-Mod.git
-cd Ultimate-Performance-Mod
+git clone https://github.com/yigit-guven/Superionic.git
+cd Superionic
 ./gradlew build
 # Output: build/libs/Superionic-<version>.jar
 ```
@@ -143,8 +145,8 @@ Requires Java 21 or later. All dependencies are resolved automatically by Gradle
 
 ## Contributing
 
-- **Bug reports:** Open an [issue](https://github.com/yigit-guven/Ultimate-Performance-Mod/issues) with version info, a description, and any crash reports from `.minecraft/crash-reports/`
-- **Optimization ideas:** Open an [issue](https://github.com/yigit-guven/Ultimate-Performance-Mod/issues) or post in [Discord](https://discord.gg/gNajXYku5z) — if it can be measured and improved, it's worth exploring
+- **Bug reports:** Open an [issue](https://github.com/yigit-guven/Superionic/issues) with version info, a description, and any crash reports from `.minecraft/crash-reports/`
+- **Optimization ideas:** Open an [issue](https://github.com/yigit-guven/Superionic/issues) or post in [Discord](https://discord.gg/gNajXYku5z) — if it can be measured and improved, it's worth exploring
 
 ---
 
@@ -159,13 +161,13 @@ You are free to use, modify, and redistribute this project. Derivative works mus
 <p align="center">
   Built by <a href="https://github.com/yigit-guven">Yigit Guven</a>
   &nbsp;·&nbsp;
-  <a href="https://www.curseforge.com/minecraft/mc-mods/ultimate-performance-mod">CurseForge</a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/superionic">CurseForge</a>
   &nbsp;·&nbsp;
-  <a href="https://modrinth.com/mod/ultimate-performance-mod">Modrinth</a>
+  <a href="https://modrinth.com/mod/superionic">Modrinth</a>
   &nbsp;·&nbsp;
   <a href="https://discord.gg/gNajXYku5z">Discord</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/yigit-guven/Ultimate-Performance-Mod/issues">Issues</a>
+  <a href="https://github.com/yigit-guven/Superionic/issues">Issues</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/yigit-guven/Ultimate-Performance-Mod/wiki">Wiki</a>
+  <a href="https://github.com/yigit-guven/Superionic/wiki">Wiki</a>
 </p>

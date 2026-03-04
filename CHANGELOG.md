@@ -1,3 +1,7 @@
+# Changelog
+
+## [1.0.0-alpha.1] - 2026-03-04
+
 - Intercepted `BufferSource.getBuffer()` to defer and suppress unnecessary `endBatch()` calls between compatible render types
 - Introduced pending-batch tracking: flushes are held until a genuinely incompatible render type arrives, reducing total GPU buffer submissions per frame
 - Added safety drain hooks at `getBuffer()` return and `endBatch()` entry to guarantee no geometry is silently dropped
