@@ -9,7 +9,14 @@
 		"HudBatchingMixin",
 		"ParticleBatchingMixin",
 		"EntityBatchingMixin",
-		"PerformanceToastMixin"
+		"PerformanceToastMixin",
+		"EntityShadowMixin",
+		"LeavesBlockMixin",
+		"ChestRendererMixin",
+		"MobAiMixin",
+		"AllocationMixin",
+		"ChunkLoadingMixin",
+		"NetworkMixin"
 	],
 	"injectors": {
 		"defaultRequire": 0

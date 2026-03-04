@@ -42,6 +42,54 @@ public class SuperionicMenu implements ModMenuApi {
                 .setSaveConsumer(newValue -> SuperionicConfig.showPerformanceToast = newValue)
                 .build());
 
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Particle Culling"), SuperionicConfig.particleCulling)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Skips rendering particles that are outside the camera view."))
+                .setSaveConsumer(newValue -> SuperionicConfig.particleCulling = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Entity Shadows"), SuperionicConfig.entityShadowCulling)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Optimizes entity shadow rendering to reduce overhead."))
+                .setSaveConsumer(newValue -> SuperionicConfig.entityShadowCulling = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Fast Leaves"), SuperionicConfig.fastLeaves)
+                .setDefaultValue(false)
+                .setTooltip(Component.literal("Uses a more efficient rendering path for leaf blocks."))
+                .setSaveConsumer(newValue -> SuperionicConfig.fastLeaves = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Fast Chests"), SuperionicConfig.fastChestRendering)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Optimizes chest rendering by reducing model complexity and animations."))
+                .setSaveConsumer(newValue -> SuperionicConfig.fastChestRendering = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("AI Throttling"), SuperionicConfig.aiThrottling)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Reduces AI update frequency for distant mobs to save CPU."))
+                .setSaveConsumer(newValue -> SuperionicConfig.aiThrottling = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Reduce Allocations"), SuperionicConfig.reduceAllocations)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Minimizes temporary object creation to reduce Garbage Collection pressure."))
+                .setSaveConsumer(newValue -> SuperionicConfig.reduceAllocations = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Fast Chunk Loading"), SuperionicConfig.fastChunkLoading)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Optimizes thread priorities for faster world generation and loading."))
+                .setSaveConsumer(newValue -> SuperionicConfig.fastChunkLoading = newValue)
+                .build());
+
+            general.addEntry(entryBuilder.startBooleanToggle(Component.literal("Network Tuning"), SuperionicConfig.packetCompressionTuning)
+                .setDefaultValue(true)
+                .setTooltip(Component.literal("Optimizes packet compression thresholds for smoother multiplayer."))
+                .setSaveConsumer(newValue -> SuperionicConfig.packetCompressionTuning = newValue)
+                .build());
+
             return builder.setSavingRunnable(SuperionicConfig::save).build();
         };
     }

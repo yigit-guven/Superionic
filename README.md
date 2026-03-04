@@ -24,7 +24,7 @@ No visual changes. No server required. Just a more efficient client.
 
 ---
 
-## core Optimization Modules (v1.0.0-alpha.1)
+## core Optimization Modules (v1.0.0-alpha.2)
 
 ### 🎨 Render Pipeline Batching
 Superionic intercepts the primary client-side buffering system (`BufferSource.getBuffer()`) to identify and consolidate compatible render types. By deferring buffer flushes, it minimizes the number of draw calls submitted to the GPU, reducing the driver-level overhead of state changes.
@@ -37,6 +37,30 @@ By injecting into `LevelRenderer.extractVisibleEntities()`, Superionic sorts vis
 
 ### 📊 Performance HUD
 A lightweight on-screen overlay provides real-time data on FPS, memory usage, and entity/particle counts, allowing for immediate feedback on client performance and resource utilization.
+
+### 💨 Particle Culling
+Skips the rendering and processing of particles that are outside the camera's view (frustum) or are too small/far to be meaningfully visible. This significantly reduces the CPU and GPU load in areas with dense particle effects like campfires, explosions, or spores.
+
+### 👥 Entity Shadow Culling
+Optimizes entity shadows by disabling them for entities beyond a 32-block radius. This maintains visual depth for nearby objects while eliminating unnecessary shadow calculation overhead for distant entities.
+
+### 🍃 Fast Leaves
+Implements a more efficient rendering path for leaf blocks by treating them as opaque (solid) geometry. This drastically reduces the number of transparent faces the GPU must sort and render, providing a substantial FPS boost in forest biomes.
+
+### 📦 Fast Chest Rendering
+Chests in Minecraft traditionally use complex animated models that are expensive to render in large quantities. Superionic provides a simplified rendering path that disables non-essential animations for chests, reducing CPU-to-GPU overhead in storage rooms.
+
+### 🤖 AI Pathfinding Throttling
+Significantly reduces the update frequency of AI logic and pathfinding for mobs that are far from the player. This saves CPU cycles on entities that don't immediately affect the player's experience.
+
+### 🧹 Allocation Reduction
+Intelligently reuses objects and optimizes data structures in hot code paths (like rendering) to minimize temporary object creation. This reduces the frequency of Java Garbage Collection (GC) pauses, leading to smoother gameplay.
+
+### 🚀 Fast Chunk Loading
+Optimizes the thread priority and task scheduling of the internal chunk builder. This allows new terrain to load and render faster without impacting the main game thread's frame rate.
+
+### 🛰️ Network Tuning
+Refines packet compression thresholds and entity tracking logic to ensure smoother data flow on multiplayer servers. This reduces "network lag" during high-traffic scenarios.
 
 ---
 
@@ -66,6 +90,14 @@ Settings are stored at `.minecraft/config/superionic.json` and generated automat
 | `entitySorting` | `true` | Pre-extraction entity grouping by render type |
 | `hudBatching` | `true` | HUD-level draw call batching (upcoming) |
 | `showPerformanceToast` | `false` | Enable the on-screen performance overlay |
+| `particleCulling` | `true` | Frustum-based skipping of off-screen particles |
+| `entityShadowCulling` | `true` | Distance-based culling for entity shadows |
+| `fastLeaves` | `false` | Accelerated rendering for leaf blocks (opaque) |
+| `fastChestRendering` | `true` | Simplify chest models and animations |
+| `aiThrottling` | `true` | Reduce AI update frequency for distant mobs |
+| `reduceAllocations` | `true` | Minimize object creation for better GC |
+| `fastChunkLoading` | `true` | Optimize thread priorities for world loading |
+| `packetCompressionTuning` | `true` | Tune network compression thresholds |
 
 ### Performance Overlay
 

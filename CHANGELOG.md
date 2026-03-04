@@ -1,3 +1,12 @@
 - Rebranded project to Superionic
 - Updated documentation for Modrinth compliance
 - Added technical implementation and performance evidence sections to README
+- Added **Particle Culling**: Skips off-screen or distant particles to reduce GPU load
+- Added **Entity Shadow Culling**: Distance-based culling for entity shadows (32-block radius)
+- Added **Fast Leaves**: Implements opaque-like rendering for leaves to boost FPS in forests
+- Added **Fast Chest Rendering**: Simplified model and animation path for chests
+- Added **AI Pathfinding Throttling**: Reduced update frequency for distant mob AI
+- Added **Allocation Reduction**: Minimized temporary object creation in hot paths
+- Added **Fast Chunk Loading**: Optimized thread priorities for world loading
+- Added **Network Tuning**: Refined packet compression and tracking logic
+- Updated configuration menu and JSON to support new toggles
