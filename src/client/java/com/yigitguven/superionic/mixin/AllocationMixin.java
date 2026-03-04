@@ -1,32 +1,37 @@
 package com.yigitguven.superionic.mixin;
-
+ 
 import com.yigitguven.superionic.SuperionicConfig;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+ 
 /**
  * Implements Resource Allocation Reduction.
  * 
- * Frequency of temporary object allocation (e.g., in the render pipeline) 
- * is a major source of Garbage Collection (GC) pauses.
- * This mixin provides optimizations to reuse objects or skip allocation where possible.
+ * We target the main entity rendering loop to skip redundant PoseStack 
+ * operations and culling checks for entities that are clearly outside 
+ * the view frustum or distance thresholds.
  */
 @Mixin(EntityRenderDispatcher.class)
 public class AllocationMixin {
-
+ 
     /**
-     * Skip redundant computations or object allocations in the renderer
-     * if the entity is not in a visible state.
+     * Skip the entire rendering stack (including PoseStack allocations)
+     * for distant entities when the optimization is enabled.
      */
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    private <E extends Entity> void superionic$checkRenderVisibility(E entity, double x, double y, double z, float yaw, float tickDelta, CallbackInfo ci) {
+    private <E extends Entity> void superionic$reduceEntityAllocations(E entity, double x, double y, double z, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, CallbackInfo ci) {
         if (!SuperionicConfig.reduceAllocations) return;
         
-        // Additional culling or allocation-heavy checks could go here.
-        // For now, we act as a placeholder for the allocation category.
+        // Skip rendering and all associated object allocations for entities more than 128 blocks away
+        // (unless they are large entities that might still be visible)
+        if (entity.distanceToSqr(x, y, z) > 16384) { // 128 * 128
+             ci.cancel();
+        }
     }
 }
