@@ -20,15 +20,23 @@ public class BenchmarkSystem {
     private static final AtomicLong skippedAiTicks = new AtomicLong(0);
     private static final AtomicLong skippedAllocations = new AtomicLong(0);
 
+    // Session-wide counters (cumulative)
+    private static final AtomicLong sessionSuppressedFlushes = new AtomicLong(0);
+    private static final AtomicLong sessionCulledParticles = new AtomicLong(0);
+    private static final AtomicLong sessionCulledShadows = new AtomicLong(0);
+    private static final AtomicLong sessionCulledLeafFaces = new AtomicLong(0);
+    private static final AtomicLong sessionSkippedAiTicks = new AtomicLong(0);
+    private static final AtomicLong sessionSkippedAllocations = new AtomicLong(0);
+
     private static final long LOG_INTERVAL_MS = 5000; // 5 seconds for debugging
     private static long lastLogTime = System.currentTimeMillis();
 
-    public static void recordSuppressedFlush() { suppressedFlushes.incrementAndGet(); }
-    public static void recordCulledParticle() { culledParticles.incrementAndGet(); }
-    public static void recordCulledShadow() { culledShadows.incrementAndGet(); }
-    public static void recordCulledLeafFace() { culledLeafFaces.incrementAndGet(); }
-    public static void recordSkippedAiTick() { skippedAiTicks.incrementAndGet(); }
-    public static void recordSkippedAllocation() { skippedAllocations.incrementAndGet(); }
+    public static void recordSuppressedFlush() { suppressedFlushes.incrementAndGet(); sessionSuppressedFlushes.incrementAndGet(); }
+    public static void recordCulledParticle() { culledParticles.incrementAndGet(); sessionCulledParticles.incrementAndGet(); }
+    public static void recordCulledShadow() { culledShadows.incrementAndGet(); sessionCulledShadows.incrementAndGet(); }
+    public static void recordCulledLeafFace() { culledLeafFaces.incrementAndGet(); sessionCulledLeafFaces.incrementAndGet(); }
+    public static void recordSkippedAiTick() { skippedAiTicks.incrementAndGet(); sessionSkippedAiTicks.incrementAndGet(); }
+    public static void recordSkippedAllocation() { skippedAllocations.incrementAndGet(); sessionSkippedAllocations.incrementAndGet(); }
 
     public static long getSuppressedFlushes() { return suppressedFlushes.get(); }
     public static long getCulledParticles() { return culledParticles.get(); }
@@ -36,6 +44,18 @@ public class BenchmarkSystem {
     public static long getCulledLeafFaces() { return culledLeafFaces.get(); }
     public static long getSkippedAiTicks() { return skippedAiTicks.get(); }
     public static long getSkippedAllocations() { return skippedAllocations.get(); }
+
+    public static long getSessionSuppressedFlushes() { return sessionSuppressedFlushes.get(); }
+    public static long getSessionCulledParticles() { return sessionCulledParticles.get(); }
+    public static long getSessionCulledShadows() { return sessionCulledShadows.get(); }
+    public static long getSessionCulledLeafFaces() { return sessionCulledLeafFaces.get(); }
+    public static long getSessionSkippedAiTicks() { return sessionSkippedAiTicks.get(); }
+    public static long getSessionSkippedAllocations() { return sessionSkippedAllocations.get(); }
+
+    public static long getTotalSessionSavings() {
+        return sessionSuppressedFlushes.get() + sessionCulledParticles.get() + sessionCulledShadows.get() + 
+               sessionCulledLeafFaces.get() + sessionSkippedAiTicks.get() + sessionSkippedAllocations.get();
+    }
 
     public static void tick() {
         if (!SuperionicConfig.enableBenchmarks) return;

@@ -35,7 +35,6 @@ public class PerformanceToast implements Toast {
 
         Minecraft client = Minecraft.getInstance();
         int fps = client.getFps();
-        double ms = 1000.0 / Math.max(1, fps);
         
         long maxMem = Runtime.getRuntime().maxMemory();
         long totalMem = Runtime.getRuntime().totalMemory();
@@ -43,39 +42,40 @@ public class PerformanceToast implements Toast {
         long usedMem = totalMem - freeMem;
         int memPercent = (int) (usedMem * 100 / maxMem);
 
-        int entities = (client.level != null) ? client.level.getEntityCount() : 0;
-        // Optimizations
-        long culledParticles = com.yigitguven.superionic.BenchmarkSystem.getCulledParticles();
-        long aiSavings = com.yigitguven.superionic.BenchmarkSystem.getSkippedAiTicks();
-        long batchSavings = com.yigitguven.superionic.BenchmarkSystem.getSuppressedFlushes();
+        // Optimization Data
+        int enabledFeatures = SuperionicConfig.getEnabledFeatureCount();
+        long totalSavings = com.yigitguven.superionic.BenchmarkSystem.getTotalSessionSavings();
 
-        // --- Premium Glassmorphism UI ---
-        // Semi-transparent main plate
-        graphics.fill(0, 0, WIDTH, HEIGHT, 0x99111111);
-        // Cyan gradient border (bottom)
-        graphics.fill(0, HEIGHT - 1, WIDTH, HEIGHT, 0xFF00F0FF);
-        // Orange accent bar (left)
-        graphics.fill(0, 0, 2, HEIGHT - 1, 0xFFFFB800);
+        // --- Professional UI Theme ---
+        // Solid Dark Charcoal background for a minimal look
+        graphics.fill(0, 0, WIDTH, HEIGHT, 0xDD111111);
+        
+        // Subtle top accent line (Dark Gold/Slate)
+        graphics.fill(0, 0, WIDTH, 1, 0xFF444444);
+        // Subtle left bar
+        graphics.fill(0, 0, 1, HEIGHT, 0xFF555555);
 
-        // Header
-        graphics.drawString(font, Component.literal("SUPERIONIC ENGINE").withStyle(ChatFormatting.BOLD), 10, 5, 0xFF00F0FF, false);
+        // Header: Clean and professional
+        graphics.drawString(font, Component.literal("Performance Toast").withStyle(ChatFormatting.BOLD), 8, 6, 0xFFCCCCCC, false);
 
-        // Grid Layout
-        // Column 1
-        drawMetric(graphics, font, "FPS", String.valueOf(fps), 10, 18, 0xFFFFB800, 0xFFFFFFFF);
-        drawMetric(graphics, font, "MEM", memPercent + "%", 10, 28, 0xFFFFB800, 0xFFFFFFFF);
+        // Column 1: System Metrics
+        drawProfessionalMetric(graphics, font, "FPS", String.valueOf(fps), 8, 20, 0xFF888888, 0xFFFFFFFF);
+        drawProfessionalMetric(graphics, font, "RAM", memPercent + "%", 8, 32, 0xFF888888, 0xFFFFFFFF);
 
-        // Column 2
-        drawMetric(graphics, font, "MS ", String.format("%.1f", ms), 85, 18, 0xFFFFB800, 0xFFFFFFFF);
-        drawMetric(graphics, font, "ENT", String.valueOf(entities), 85, 28, 0xFFFFB800, 0xFFFFFFFF);
-
-        // Row 3: Optimizations (Real-time proof)
-        drawMetric(graphics, font, "OPT", (culledParticles + aiSavings + batchSavings) + "", 10, 38, 0xFF00F0FF, 0xFF00F0FF);
+        // Column 2: Engine Metrics
+        drawProfessionalMetric(graphics, font, "ACTIVE ", enabledFeatures + "/11", 80, 20, 0xFF888888, 0xFFFFFFFF);
+        drawProfessionalMetric(graphics, font, "SAVINGS ", formatSavings(totalSavings), 80, 32, 0xFF888888, 0xFF55FF55);
     }
 
-    private void drawMetric(GuiGraphics graphics, Font font, String label, String value, int x, int y, int labelColor, int valueColor) {
+    private void drawProfessionalMetric(GuiGraphics graphics, Font font, String label, String value, int x, int y, int labelColor, int valueColor) {
         graphics.drawString(font, label + ":", x, y, labelColor, false);
         int offset = font.width(label + ":") + 4;
         graphics.drawString(font, value, x + offset, y, valueColor, false);
+    }
+
+    private String formatSavings(long savings) {
+        if (savings < 1000) return String.valueOf(savings);
+        if (savings < 1000000) return String.format("%.1fK", savings / 1000.0);
+        return String.format("%.2fM", savings / 1000000.0);
     }
 }

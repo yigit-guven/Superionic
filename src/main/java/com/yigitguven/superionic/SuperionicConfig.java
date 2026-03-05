@@ -90,6 +90,23 @@ public class SuperionicConfig {
         }
     }
 
+    public static int getEnabledFeatureCount() {
+        if (!enabled) return 0;
+        int count = 0;
+        if (batchRendering) count++;
+        if (hudBatching) count++;
+        if (entitySorting) count++;
+        if (particleCulling) count++;
+        if (entityShadowCulling) count++;
+        if (fastLeaves) count++;
+        if (fastChestRendering) count++;
+        if (aiThrottling) count++;
+        if (reduceAllocations) count++;
+        if (fastChunkLoading) count++;
+        if (packetCompressionTuning) count++;
+        return count;
+    }
+
     private record SuperionicConfigData(
             Boolean batchRendering,
             Boolean hudBatching,
